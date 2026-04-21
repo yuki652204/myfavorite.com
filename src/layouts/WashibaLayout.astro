@@ -1,0 +1,135 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Run Above the Clouds — Japan Alps Trail Running</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:#07111f;--navy2:#0e1f35;--gold:#c8a84b;--gold2:#e8c96a;
+    --sky:#a8c8e0;--white:#f5f2ee;--muted:#7a9ab8;
+    --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',sans-serif;
+  }
+  html{scroll-behavior:smooth;}
+  body{background:var(--navy);color:var(--white);font-family:var(--sans);font-weight:300;line-height:1.7;}
+  .hero{position:relative;width:100%;height:100vh;min-height:600px;overflow:hidden;display:flex;align-items:center;}
+  .hero-bg{position:absolute;inset:0;background:url('/images/washiba-yari.png') center 40%/cover no-repeat;transform:scale(1.04);animation:slowzoom 18s ease-out forwards;}
+  @keyframes slowzoom{from{transform:scale(1.04);}to{transform:scale(1.00);}}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(7,17,31,0.88) 0%,rgba(7,17,31,0.55) 52%,rgba(7,17,31,0.08) 100%),linear-gradient(to top,rgba(7,17,31,0.6) 0%,transparent 40%);}
+  .accent-bar{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--gold);}
+  .hero-content{position:relative;z-index:2;padding:0 10vw;max-width:680px;animation:fadein 1.2s ease-out both;}
+  @keyframes fadein{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+  .route-label{font-size:11px;font-weight:500;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:18px;}
+  .hero-headline{font-family:var(--serif);font-size:clamp(52px,8vw,88px);font-weight:900;line-height:0.95;color:#fff;margin-bottom:24px;}
+  .hero-headline em{color:var(--gold);font-style:normal;}
+  .hero-sub{font-size:12px;letter-spacing:3px;color:var(--sky);text-transform:uppercase;margin-bottom:36px;}
+  .hero-cta{display:inline-block;border:1.5px solid var(--gold);color:var(--gold);font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;padding:12px 28px;text-decoration:none;transition:background 0.25s,color 0.25s;}
+  .hero-cta:hover{background:var(--gold);color:var(--navy);}
+  .elevation-badge{position:absolute;bottom:40px;right:6vw;text-align:right;}
+  .elevation-num{font-family:var(--serif);font-size:42px;font-weight:700;color:#fff;line-height:1;}
+  .elevation-num span{font-size:20px;color:var(--gold);}
+  .elevation-name,.elevation-view{font-size:10px;letter-spacing:2.5px;color:var(--sky);text-transform:uppercase;margin-top:4px;}
+  .elevation-view{color:var(--muted);}
+  .scroll-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .scroll-hint span{font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+  .scroll-line{width:1px;height:36px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollpulse 2s ease-in-out infinite;}
+  @keyframes scrollpulse{0%,100%{opacity:0.4;}50%{opacity:1;}}
+  .article{max-width:720px;margin:0 auto;padding:80px 32px 120px;}
+  .article-meta{display:flex;gap:24px;align-items:center;margin-bottom:48px;padding-bottom:24px;border-bottom:0.5px solid rgba(200,168,75,0.3);}
+  .tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--navy);background:var(--gold);padding:4px 10px;font-weight:500;}
+  .meta-info{font-size:12px;color:var(--muted);letter-spacing:1px;}
+  .article h1{font-family:var(--serif);font-size:clamp(28px,4vw,42px);font-weight:700;line-height:1.2;color:var(--white);margin-bottom:16px;}
+  .article .lead{font-size:18px;color:var(--sky);line-height:1.8;margin-bottom:48px;}
+  .article h2{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--gold);margin:48px 0 16px;}
+  .article p{font-size:16px;color:rgba(245,242,238,0.82);margin-bottom:20px;line-height:1.85;}
+  .specs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:rgba(200,168,75,0.2);border:1px solid rgba(200,168,75,0.2);margin:40px 0;}
+  .spec-item{background:var(--navy2);padding:20px 18px;}
+  .spec-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .spec-value{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--white);}
+  .spec-unit{font-size:12px;color:var(--gold);font-family:var(--sans);}
+  .quote-block{border-left:3px solid var(--gold);padding:16px 28px;margin:40px 0;background:rgba(200,168,75,0.05);}
+  .quote-block p{font-family:var(--serif);font-size:20px;font-style:italic;color:var(--white);line-height:1.6;margin:0;}
+  .gear-divider{display:flex;align-items:center;gap:16px;margin:64px 0 8px;}
+  .gear-divider::before,.gear-divider::after{content:'';flex:1;height:0.5px;background:rgba(200,168,75,0.3);}
+  .gear-divider span{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);white-space:nowrap;}
+  .gear-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin:32px 0 0;}
+  .gear-card{background:var(--navy2);border:0.5px solid rgba(200,168,75,0.25);border-top:2px solid var(--gold);padding:28px 24px;}
+  .gear-brand{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+  .gear-model{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--white);margin-bottom:16px;}
+  .gear-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
+  .gear-tag{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);background:var(--gold);padding:3px 9px;font-weight:500;}
+  .gear-text{font-size:14px;color:rgba(245,242,238,0.75);line-height:1.8;margin-bottom:14px;}
+  footer{border-top:0.5px solid rgba(200,168,75,0.2);padding:32px;text-align:center;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="accent-bar"></div>
+  <div class="hero-content">
+    <div class="route-label">Ura-Ginza Route &nbsp;·&nbsp; North Alps, Japan</div>
+    <h1 class="hero-headline">RUN<br>ABOVE<br><em>THE CLOUDS.</em></h1>
+    <div class="hero-sub">Washiba-dake &nbsp;·&nbsp; View of Yari-ga-take &nbsp;·&nbsp; Unforgettable</div>
+    <a href="#article" class="hero-cta">Read the Story ›</a>
+  </div>
+  <div class="elevation-badge">
+    <div class="elevation-num">2,924<span>m</span></div>
+    <div class="elevation-name">Washiba-dake</div>
+    <div class="elevation-view">Yari-ga-take visible</div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+<article class="article" id="article">
+  <div class="article-meta">
+    <span class="tag">Trail Report</span>
+    <span class="meta-info">North Alps &nbsp;·&nbsp; Ura-Ginza Route &nbsp;·&nbsp; Summer</span>
+  </div>
+  <h1>Washiba-dake: The Throne Above the Clouds</h1>
+  <p class="lead">Standing at 2,924 metres on the Ura-Ginza ridge, Washiba-dake delivers one of the most dramatic views in the entire Japanese Alps — a direct sightline to the iconic spire of Yari-ga-take, rising sharp above a sea of cloud.</p>
+  <div class="specs-grid">
+    <div class="spec-item"><div class="spec-label">Peak</div><div class="spec-value">2,924<span class="spec-unit">m</span></div></div>
+    <div class="spec-item"><div class="spec-label">Route</div><div class="spec-value" style="font-size:16px;">Ura-Ginza</div></div>
+    <div class="spec-item"><div class="spec-label">Distance</div><div class="spec-value">~50<span class="spec-unit">km</span></div></div>
+    <div class="spec-item"><div class="spec-label">Season</div><div class="spec-value" style="font-size:16px;">July–Sept</div></div>
+  </div>
+  <h2>The View That Stops You Cold</h2>
+  <p>You've been running for hours along the high ridge when the trail opens up and Yari-ga-take appears. The mountain's legendary horn-shaped summit — "the Matterhorn of Japan" — cuts the sky with surgical precision. Below it, a turquoise alpine lake catches the light. You stop. You have to.</p>
+  <p>This is the moment the Ura-Ginza route is famous for, and no photograph quite does justice to the scale. The North Alps stretch in every direction, ridge after ridge, fading to blue. On a clear day you can see from the Tateyama range in the north all the way down toward the Southern Alps.</p>
+  <div class="quote-block"><p>"The summit of Washiba-dake is not a destination. It is a reminder of how small you are — and how alive that makes you feel."</p></div>
+  <h2>Trail Conditions</h2>
+  <p>The Ura-Ginza is one of the most remote ridgeline traverses in Japan. Access is limited — the route begins near Takase Dam, reachable only by a pre-booked taxi from Omachi. There are no shortcuts, and the exposure is real: rocky terrain, steep descents, and weather that can change within minutes at altitude.</p>
+  <p>Trail shoes with solid lateral support and aggressive grip are essential. The rocks above 2,500m are angular and unforgiving, particularly after rain. Wide-toe boxes help on the sustained descents where foot swell becomes a factor over multi-day efforts.</p>
+  <h2>Getting There</h2>
+  <p>From Tokyo: Shinkansen to Matsumoto (approx. 2.5 hours), then limited express to Shinano-Omachi. From Omachi, a pre-booked shared taxi service runs seasonally to the Takase Dam trailhead. No private vehicles permitted beyond this point.</p>
+  <p>Mountain huts (山小屋) are located at regular intervals along the Ura-Ginza ridge, making multi-day traverses accessible even without tent camping equipment. Advance reservation is strongly recommended for peak season (August).</p>
+  <div class="gear-divider"><span>Gear Notes</span></div>
+  <h2>What I Wore: TOPO Athletic &amp; Craft</h2>
+  <p>A ridge traverse of this intensity demands gear that earns its place in your pack. Two items stood out across the entire route.</p>
+  <div class="gear-grid">
+    <div class="gear-card">
+      <div class="gear-brand">TOPO Athletic</div>
+      <div class="gear-model">Trail Shoe — VISTA</div>
+      <div class="gear-tags"><span class="gear-tag">Megagrip Sole</span><span class="gear-tag">Quick-dry</span><span class="gear-tag">Lightweight</span></div>
+      <p class="gear-text">The Megagrip rubber compound is reassuringly firm underfoot — on wet granite above 2,500m, where a slip has real consequences, this kind of confident traction changes how you move. You stop calculating each step and start running again.</p>
+      <p class="gear-text">After a river crossing on day two, the shoes were soaked through. By morning they were dry. That single overnight recovery makes multi-day planning significantly simpler — no rotation pair needed, no forced rest day waiting for kit to dry in a mountain hut.</p>
+      <p class="gear-text">The overall build is light without feeling fragile. After fifty kilometres of technical ridgeline, the structure held. No hotspots, no blowouts, no complaints.</p>
+    </div>
+    <div class="gear-card">
+      <div class="gear-brand">Craft</div>
+      <div class="gear-model">Base Layer — Active Intent</div>
+      <div class="gear-tags"><span class="gear-tag">Temperature Regulation</span><span class="gear-tag">Quick-dry</span><span class="gear-tag">Cycling-derived</span></div>
+      <p class="gear-text">Originally engineered for competitive cycling, Craft's base layer transfers to alpine trail running with surprising ease. The fabric keeps skin temperature remarkably stable across the wide range you encounter on a ridge route — from the furnace of a windless ascent to the cold that hits the moment you stop at a col.</p>
+      <p class="gear-text">Moisture management is exceptional. Sweat moves through the fabric and dissipates fast enough that you rarely feel the clammy layer that builds in lesser base layers during sustained effort. Like the TOPO shoes, it dried overnight in the hut without any special treatment.</p>
+      <p class="gear-text">The cycling heritage is barely noticeable on the trail — except that it works better than most gear marketed directly at trail runners.</p>
+    </div>
+  </div>
+</article>
+<footer>&copy; Japan Alps Trail &nbsp;·&nbsp; North Alps, Japan &nbsp;·&nbsp; hikarinotama.com</footer>
+</body>
+</html>
