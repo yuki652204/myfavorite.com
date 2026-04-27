@@ -24,3 +24,4 @@ pnpm-debug.log*
 .idea/
 public/images/backwpup
 public/images/backwpup-restore
+.claude/settings.local.json
