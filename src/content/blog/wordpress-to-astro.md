@@ -9,6 +9,8 @@ heroImage: "/images/wordpress-to-astro.png"
 
 長年お世話になったWordPressに別れを告げ、**Astro**という静的サイトジェネレーターに移行しました。localからオリジナルのテーマを作成したサイトでした。はじめてもPHPのコードでエラーの連続で苦労したことをおぼえています。自分でアーカイブや検索機能を入れたりできたことはすごく良い経験だったと思います。今回はワードプレスの運用が手間になってきたのでサーバー代は実質ゼロ、表示速度は爆速のクラウドフレアを使ってみることにしました。移行作業の全記録をまとめます。
 
+![WordPressのトップページ](/images/wp-top.png)
+
 ## なぜWordPressをやめたのか
 
 WordPressは優秀なCMSです。プラグインで何でもできるし、管理画面も直感的。でも使い続けるうちに、いくつかの不満が積み重なってきました。
@@ -68,6 +70,8 @@ npx wpxml2md WordPress_export.xml -o ./src/content/blog
 ```
 
 25件の記事が一気にMarkdownになります。
+
+![WordPressの記事一覧](/images/wp-article-list.png)
 
 ### 5. 画像パスを修正
 
