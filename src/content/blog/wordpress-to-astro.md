@@ -2,7 +2,7 @@
 title: "WordPressからAstro＋Cloudflare Pagesに移行してみた"
 description: "長年使っていたWordPressをAstro製の静的サイトに移行し、Cloudflare Pagesで無料公開するまでの記録です。"
 pubDate: "2026-04-16"
-heroImage: ""
+heroImage: "/images/wordpress-to-astro.png"
 ---
 
 # WordPressからAstro＋Cloudflare Pagesに移行してみた
