@@ -1,49 +1,233 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog'))
+  .filter(p => p.data.title)
+  .sort((a, b) => {
+    const da = a.data.pubDate ? new Date(a.data.pubDate).valueOf() : 0;
+    const db = b.data.pubDate ? new Date(b.data.pubDate).valueOf() : 0;
+    return db - da;
+  });
 ---
 
 <!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
+<html lang="ja">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <style>
+      .home-wrap {
+        width: 720px;
+        max-width: calc(100% - 2em);
+        margin: 0 auto;
+        padding: 3em 1em 4em;
+      }
+
+      /* プロフィール */
+      .profile {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        padding: 2rem;
+        background: rgb(var(--navy2));
+        border: 0.5px solid rgba(200, 168, 75, 0.3);
+        border-radius: 12px;
+        margin-bottom: 3rem;
+      }
+      .profile-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: rgba(200, 168, 75, 0.15);
+        border: 2px solid var(--gold);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.2rem;
+        flex-shrink: 0;
+      }
+      .profile-name {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--gold);
+        margin: 0 0 0.3rem;
+      }
+      .profile-bio {
+        font-size: 0.95rem;
+        color: rgba(245, 242, 238, 0.75);
+        margin: 0 0 0.6rem;
+        line-height: 1.5;
+      }
+      .profile-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+      .profile-tag {
+        font-size: 0.78rem;
+        padding: 2px 10px;
+        border-radius: 20px;
+        background: rgba(200, 168, 75, 0.12);
+        border: 0.5px solid rgba(200, 168, 75, 0.4);
+        color: var(--accent-dark);
+      }
+
+      /* セクション見出し */
+      .section-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--gold);
+        border-left: 3px solid var(--gold);
+        padding-left: 0.6em;
+        margin: 0 0 1.4rem;
+        letter-spacing: 0.05em;
+      }
+
+      /* 記事カード */
+      .card-grid {
+        display: grid;
+        gap: 1.2rem;
+      }
+      .card {
+        display: flex;
+        gap: 1rem;
+        background: rgb(var(--navy2));
+        border: 0.5px solid rgba(200, 168, 75, 0.2);
+        border-radius: 10px;
+        overflow: hidden;
+        text-decoration: none;
+        transition: border-color 0.2s, transform 0.2s;
+      }
+      .card:hover {
+        border-color: rgba(200, 168, 75, 0.6);
+        transform: translateY(-2px);
+      }
+      .card-thumb {
+        width: 110px;
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+      .card-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0;
+        display: block;
+      }
+      .card-thumb-placeholder {
+        width: 110px;
+        height: 100%;
+        background: rgba(200, 168, 75, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        flex-shrink: 0;
+      }
+      .card-body {
+        padding: 0.9rem 1rem 0.9rem 0;
+        flex: 1;
+        min-width: 0;
+      }
+      .card-date {
+        font-size: 0.78rem;
+        color: rgba(200, 168, 75, 0.6);
+        margin: 0 0 0.3rem;
+      }
+      .card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: rgb(var(--white));
+        margin: 0 0 0.3rem;
+        line-height: 1.4;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .card-desc {
+        font-size: 0.85rem;
+        color: rgba(245, 242, 238, 0.6);
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      @media (max-width: 540px) {
+        .profile {
+          flex-direction: column;
+          text-align: center;
+        }
+        .profile-tags {
+          justify-content: center;
+        }
+        .card-thumb,
+        .card-thumb-placeholder {
+          width: 80px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main class="home-wrap">
+
+      <!-- プロフィール -->
+      <section class="profile">
+        <div class="profile-avatar">🏔</div>
+        <div>
+          <p class="profile-name">yuki</p>
+          <p class="profile-bio">
+            山と走ること、コードを書くことが好き。<br />
+            北アルプスの稜線を歩き、日常をエンジニアとして過ごしています。
+          </p>
+          <div class="profile-tags">
+            <span class="profile-tag">🏃 トレイルランナー</span>
+            <span class="profile-tag">💻 バックエンドエンジニア</span>
+            <span class="profile-tag">📍 東京在住</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 記事一覧 -->
+      <section>
+        <h2 class="section-title">最近の記事</h2>
+        <div class="card-grid">
+          {posts.map(post => {
+            const slug = post.id.replace(/\.(md|mdx)$/, '');
+            const url = `/blog/${slug}/`;
+            return (
+              <a class="card" href={url}>
+                {post.data.heroImage ? (
+                  <div class="card-thumb">
+                    <img src={post.data.heroImage} alt={post.data.title} />
+                  </div>
+                ) : (
+                  <div class="card-thumb-placeholder">📝</div>
+                )}
+                <div class="card-body">
+                  {post.data.pubDate && (
+                    <p class="card-date">
+                      <FormattedDate date={new Date(post.data.pubDate)} />
+                    </p>
+                  )}
+                  <p class="card-title">{post.data.title}</p>
+                  {post.data.description && (
+                    <p class="card-desc">{post.data.description}</p>
+                  )}
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+
+    </main>
+    <Footer />
+  </body>
 </html>
