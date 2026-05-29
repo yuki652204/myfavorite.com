@@ -3,7 +3,10 @@ title: "Why Rural Japan Looks Like a Ghibli Film — And Where to Find It"
 description: "Not fantasy. Not tourism. These are real Japanese rice fields, wooden farmhouses, and misty mountain roads — rendered with cinematic anime light."
 pubDate: 2026-05-29
 tags: ["Japan", "anime art", "rural Japan", "authentic Japan", "Makoto Shinkai", "Studio Ghibli"]
+heroImage: "/images/tofu_shop_japan.png"
 ---
+
+![A rural Japanese tofu shop with kei truck, utility poles and rice fields — cinematic anime art](/images/tofu_shop_japan.png)
 
 There's a moment — standing at the edge of a rice field at dusk, watching mist curl up from the water — when you realize something.
 
@@ -50,6 +53,8 @@ Not a fantasy landscape. Not a generic "Japan aesthetic." A specific farmhouse i
 Then — and only then — we ask: what would this look like, rendered with cinematic anime light?
 
 The result isn't illustration. It isn't photography. It's something in between: **the authentic and the beautiful, together**.
+
+![Shirakawago village in anime style — gassho-zukuri farmhouses and misty mountains](/images/shirakawago-anime.png)
 
 [Browse the collection →](https://anime-art-shop.vercel.app)
 
