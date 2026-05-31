@@ -1,0 +1,637 @@
+---
+// src/pages/hokuriku-wood-carving.astro
+// 北陸の木彫り — bilingual article page for myfavorite.com
+const title = "北陸の木彫り | Wood Carvings of Hokuriku";
+const description = "永平寺の謎の葡萄彫刻から、今も職人が彫り続ける井波まで。北陸の隠れた木彫り文化をたずねて。";
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1814;
+      --ink-light: #4a4540;
+      --ink-muted: #8a8278;
+      --paper: #f7f4ef;
+      --paper-warm: #ede9e2;
+      --accent: #8b6914;
+      --accent-light: #c4a44a;
+      --border: rgba(26,24,20,0.12);
+      --serif-ja: 'Noto Serif JP', serif;
+      --serif-en: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Noto Sans JP', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--serif-ja);
+      font-size: 16px;
+      line-height: 2;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .site-logo {
+      font-family: var(--serif-en);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+    }
+    .lang-toggle {
+      display: flex;
+      gap: 0;
+      border: 0.5px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .lang-toggle button {
+      background: transparent;
+      border: none;
+      padding: 6px 14px;
+      font-family: var(--sans);
+      font-size: 12px;
+      cursor: pointer;
+      color: var(--ink-muted);
+      transition: background 0.2s, color 0.2s;
+    }
+    .lang-toggle button.active {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: clamp(320px, 55vw, 560px);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .hero-panel {
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-panel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 6s ease;
+    }
+    .hero-panel:hover img { transform: scale(1.03); }
+    .hero-panel-label {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      background: rgba(26,24,20,0.62);
+      backdrop-filter: blur(4px);
+      color: #f7f4ef;
+      font-family: var(--sans);
+      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: 3px;
+      letter-spacing: 0.06em;
+      line-height: 1.6;
+    }
+    .hero-panel-label strong {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .hero-divider {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: rgba(247,244,239,0.4);
+      z-index: 2;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(26,24,20,0.45) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .hero-title-block {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 3;
+      width: 90%;
+    }
+    .hero-kicker {
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: rgba(247,244,239,0.75);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .hero-h1-ja {
+      font-family: var(--serif-ja);
+      font-size: clamp(18px, 3vw, 28px);
+      font-weight: 500;
+      color: #f7f4ef;
+      line-height: 1.5;
+      margin-bottom: 0.25rem;
+    }
+    .hero-h1-en {
+      font-family: var(--serif-en);
+      font-size: clamp(13px, 2vw, 18px);
+      font-weight: 400;
+      font-style: italic;
+      color: rgba(247,244,239,0.8);
+      line-height: 1.4;
+    }
+
+    /* ── ARTICLE LAYOUT ── */
+    .article-container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+
+    /* ── LANG SECTIONS ── */
+    .lang-ja, .lang-en { display: block; }
+    .lang-ja.hidden, .lang-en.hidden { display: none; }
+
+    /* ── TYPOGRAPHY ── */
+    .article-lead {
+      font-size: 15px;
+      color: var(--ink-muted);
+      border-left: 2px solid var(--accent-light);
+      padding-left: 1.25rem;
+      margin-bottom: 3rem;
+      line-height: 2;
+      border-radius: 0;
+    }
+    .section-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 3rem 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 0.5px;
+      background: var(--border);
+    }
+    .article-p {
+      font-size: 16px;
+      line-height: 2;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    .article-p-en {
+      font-family: var(--serif-en);
+      font-size: 17px;
+      line-height: 1.9;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    .pull-quote {
+      margin: 2rem 0;
+      padding: 1rem 1.5rem;
+      border-left: 2px solid var(--accent);
+      border-radius: 0;
+    }
+    .pull-quote p {
+      font-size: 17px;
+      color: var(--ink-light);
+      line-height: 1.9;
+      font-style: italic;
+    }
+    .pull-quote-en p {
+      font-family: var(--serif-en);
+      font-size: 19px;
+    }
+
+    /* ── PHOTO ── */
+    .photo-block {
+      margin: 2rem -1rem;
+    }
+    .photo-block img {
+      width: 100%;
+      display: block;
+      border-radius: 4px;
+    }
+    .photo-caption {
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--ink-muted);
+      padding: 0.6rem 1rem 0;
+      line-height: 1.7;
+      border-top: 0.5px solid var(--border);
+      margin-top: 0.5rem;
+    }
+
+    /* ── COMPARISON ── */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .compare-card {
+      background: var(--paper-warm);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem;
+    }
+    .compare-card-title {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+    .compare-card-body {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--ink-light);
+      line-height: 1.8;
+    }
+
+    /* ── CTA ── */
+    .cta-block {
+      margin: 3rem 0 0;
+      padding: 1.5rem;
+      background: var(--paper-warm);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+    }
+    .cta-block p {
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--ink-light);
+      line-height: 1.8;
+      margin: 0;
+    }
+    .cta-block a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 0.5px solid var(--accent-light);
+      padding-bottom: 1px;
+      transition: border-color 0.2s;
+    }
+    .cta-block a:hover { border-color: var(--accent); }
+
+    /* ── TAGS ── */
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2.5rem;
+    }
+    .tag {
+      font-family: var(--sans);
+      font-size: 11px;
+      color: var(--ink-muted);
+      border: 0.5px solid var(--border);
+      border-radius: 3px;
+      padding: 3px 10px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      border: none;
+      border-top: 0.5px solid var(--border);
+      margin: 2.5rem 0;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .hero { height: 260px; }
+      .hero-title-block { display: none; }
+      .compare-grid { grid-template-columns: 1fr; }
+      .article-container { padding: 2rem 1.25rem 4rem; }
+      .photo-block { margin: 1.5rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="site-logo">myfavorite</a>
+    <div class="lang-toggle">
+      <button class="active" id="btn-ja" onclick="setLang('ja')">日本語</button>
+      <button id="btn-en" onclick="setLang('en')">English</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-panel">
+      <!-- 左: 井波町 瑞泉寺 -->
+      <img src="/images/hokuriku/zuisenji-inami.jpg" alt="井波町 瑞泉寺" loading="eager" />
+      <div class="hero-panel-label">
+        <strong>瑞泉寺 · Zuisenji</strong>
+        井波町 · Inami, Toyama
+      </div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-panel">
+      <!-- 右: 永平寺 -->
+      <img src="/images/hokuriku/eiheiji-steps.jpg" alt="永平寺 石段と杉" loading="eager" />
+      <div class="hero-panel-label">
+        <strong>永平寺 · Eiheiji</strong>
+        永平寺町 · Eiheiji, Fukui
+      </div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-title-block">
+      <p class="hero-kicker">Hokuriku · Wood Carving · Craft</p>
+      <h1 class="hero-h1-ja">禅寺になぜ葡萄があるのか</h1>
+      <p class="hero-h1-en">Why Does a Zen Temple Have Grapes?</p>
+    </div>
+  </div>
+
+  <!-- ARTICLE -->
+  <main class="article-container">
+
+    <!-- ===== 日本語 ===== -->
+    <section class="lang-ja" id="section-ja">
+
+      <p class="article-lead">
+        永平寺の謎の葡萄彫刻から、今も職人が彫り続ける井波まで。多くの旅行者が素通りする、北陸の隠れた木彫り文化。
+      </p>
+
+      <div class="section-label">I — 永平寺：謎の彫刻</div>
+
+      <p class="article-p">福井の山中、曹洞宗の大本山・永平寺を訪れれば、龍を期待する。獅子を期待する。日本の寺社には必ずそれがある。</p>
+      <p class="article-p">しかしここには、葡萄があった。</p>
+
+      <div class="photo-block">
+        <img src="/images/hokuriku/eiheiji-grape-wide.jpg" alt="永平寺の葡萄彫刻 全体" loading="lazy" />
+        <p class="photo-caption">永平寺の葡萄彫刻。材はケヤキ。軒下の組物部分に位置し、ほとんどの参拝者は見上げることなく通り過ぎていく。</p>
+      </div>
+
+      <p class="article-p">控えめな彫刻ではない。ケヤキ材に深々と刻まれた構図は、蔓・葉・葡萄の房という三層の立体感を持ち、葉脈の一本一本、粒の一つひとつまで丁寧に仕上げられている。これほどの密度と彫りの深さを持つ木彫りは、東日本ではまず見られない。</p>
+
+      <div class="photo-block">
+        <img src="/images/hokuriku/eiheiji-grape-close.jpg" alt="永平寺の葡萄彫刻 クローズアップ" loading="lazy" />
+        <p class="photo-caption">葡萄の房の拡大。粒の丸み、葉脈の彫り、蔓の立体感——このクオリティの彫刻が軒下に存在していることを、案内板は何も語らない。</p>
+      </div>
+
+      <div class="pull-quote">
+        <p>日本の寺には獅子と龍がある。永平寺には葡萄がある。なぜなのか、誰も正確には知らない。</p>
+      </div>
+
+      <p class="article-p">日本の寺社建築における彫刻の意匠は、狛犬・龍・鳳凰・牡丹など、ある程度決まった語彙で構成される。葡萄はその語彙に含まれない。永平寺は道元が13世紀に宋から持ち帰った禅の思想を根本とする曹洞宗の寺。葡萄の意匠が中国伝来の系譜なのか、職人個人の意匠判断なのか、あるいは施主の特別な意図があったのか——傍らの案内板には何も書かれていない。</p>
+      <p class="article-p">その沈黙もまた、この彫刻の一部だと思う。</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">II — 堂内の彫刻パネル</div>
+
+      <div class="photo-block">
+        <img src="/images/hokuriku/eiheiji-interior-panels.jpg" alt="永平寺 堂内の彫刻パネル" loading="lazy" />
+        <p class="photo-caption">永平寺堂内の彫刻パネル。柱と梁は吉野桧とケヤキ。壁面上部には人物・滝・雲・鳥を題材とした浮き彫りパネルが連続し、堂全体を覆う。</p>
+      </div>
+
+      <p class="article-p">堂内に入ると、スケールが変わる。壁面上部には浮き彫りのパネルが横断的に連なり、人物・滝・雲・鳥が一つの世界として展開する。主要な柱と梁は吉野桧（最上級の日本桧）とケヤキの組み合わせ。彫刻パネルはケヤキで統一されている。</p>
+      <p class="article-p">これらを解説する案内板はほとんどない。永平寺は木彫りを宣伝しない。参拝者は禅のために来る。工芸はただそこにあり、見る者を待っている。</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">III — 井波：今も彫り続けている町</div>
+
+      <p class="article-p">車で南へ約2時間、富山県井波町に入ると、問いは別の形で応えられる——ただし、期待していた答えとは違う形で。</p>
+      <p class="article-p">井波彫刻は浄土真宗の寺院建築と深く結びついた木彫りの伝統であり、永平寺の曹洞宗とは異なる系譜に属する。使われる材は主にクスノキ（楠）。独特の芳香と均質な木目を持ち、深い透かし彫りに適している。意匠は鶴・松・四季の花など、日本の装飾彫刻の正統的な語彙に沿う。</p>
+
+      <div class="photo-block">
+        <img src="/images/hokuriku/inami-craftsman.jpg" alt="井波の職人 工房" loading="lazy" />
+        <p class="photo-caption">ガラス越しに見る井波の職人。背後に並ぶパネルは、それぞれ数ヶ月の作業時間を要する寺社建築用の注文品。作業台に整然と並ぶ刃物は数十本。すべて手仕事、型なし。</p>
+      </div>
+
+      <p class="article-p">井波が特別なのは、その「見える化」にある。工房が通り沿いに並び、ガラス越しに職人の手仕事をリアルタイムで見ることができる。4世紀前と同じ姿勢で、同じ道具で、同じ材に向かう職人の姿。観光地化された「展示」ではなく、これが今日の仕事である。</p>
+
+      <div class="photo-block">
+        <img src="/images/hokuriku/inami-temple-eave.jpg" alt="井波 瑞泉寺の軒下" loading="lazy" />
+        <p class="photo-caption">井波・瑞泉寺の軒下。永平寺が「一点の謎」を置くのに対し、井波は構造面全体を彫刻で覆う。軒下を歩くと、彫刻が建築の装飾ではなく建築そのものであることがわかる。</p>
+      </div>
+
+      <p class="article-p">スケールの感覚が永平寺とは根本的に異なる。永平寺が一つの組物に謎の意匠を置くとすれば、井波は軒下の全面を覆う。軒下を歩くとき、彫刻は建物を飾るものではなく、建物を構成するものとして迫ってくる。</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">IV — 世界の石彫りと、日本の木彫り</div>
+
+      <p class="article-p">バルセロナのサグラダ・ファミリア、ローマのカステル・サンタンジェロ橋——ヨーロッパの石灰岩彫刻は、外へ向かって炸裂する。ファサード全体が街路に向かって膨張し、橋の天使像は風雨に晒されたまま何世紀も白く立ち続ける。見せることが彫刻の存在理由だ。</p>
+
+      <div class="photo-block">
+        <img src="/images/hokuriku/sagrada-familia.jpg" alt="サグラダ・ファミリア バルセロナ" loading="lazy" />
+        <p class="photo-caption">サグラダ・ファミリア（バルセロナ）。石灰岩の彫刻が外壁全体を覆い、通りに向かって存在を主張する。</p>
+      </div>
+
+      <p class="article-p">日本の木彫りは隠れる。軒下へ退き、堂内の壁面へ、障子の奥へ。永平寺の葡萄彫刻は展示されているのではなく、守られている。木という素材が雨と日光を避けてはじめて生き延びる。だから誰も見上げない。だから誰も知らない。</p>
+
+      <div class="photo-block">
+        <img src="/images/hokuriku/castel-santangelo.jpg" alt="カステル・サンタンジェロ橋 ローマ" loading="lazy" />
+        <p class="photo-caption">カステル・サンタンジェロ橋（ローマ）。ベルニーニ設計の天使像が橋の両側に並ぶ。石の彫刻は風雨の中に立つことで完成する。</p>
+      </div>
+
+      <p class="article-p">石は晒されて完成し、木は守られて生き延びる。その違いが、彫刻の「在り方」を根本から変える。ヨーロッパの彫刻が都市に向かって開くとすれば、日本の木彫りは建築の内側に向かって深まっていく。</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">V — 二つの伝統、一つの北陸</div>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <p class="compare-card-title">永平寺（福井）</p>
+          <p class="compare-card-body">曹洞宗 · ケヤキ<br>一点の謎 · 問いだけが残る</p>
+        </div>
+        <div class="compare-card">
+          <p class="compare-card-title">井波（富山）</p>
+          <p class="compare-card-body">浄土真宗 · クスノキ<br>継承する伝統 · 今も動いている</p>
+        </div>
+      </div>
+
+      <p class="article-p">永平寺は「なぜ」を問わせた。井波は「どのように」を見せてくれた。互いの問いに答えるわけではない——だからこそ、北陸を旅する価値がある。</p>
+      <p class="article-p">多くの訪日外国人は京都・大阪・東京の軸を移動する。北陸はその軸から外れた場所にある。新幹線延伸でアクセスは改善されたが、平日の永平寺で葡萄彫刻の前に立ったとき、誰も見上げていなかった。</p>
+      <p class="article-p">上を見てほしい。</p>
+
+      <div class="cta-block">
+        <p>日本の工芸・アートに興味があれば、<a href="https://www.etsy.com/shop/AnimArtJapan" target="_blank" rel="noopener">AnimArtJapan</a> をのぞいてみてください。日本の美意識をテーマにしたデジタルアートプリントを販売しています。</p>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">北陸</span>
+        <span class="tag">永平寺</span>
+        <span class="tag">瑞泉寺</span>
+        <span class="tag">井波彫刻</span>
+        <span class="tag">木彫り</span>
+        <span class="tag">ケヤキ</span>
+        <span class="tag">クスノキ</span>
+        <span class="tag">インバウンド</span>
+      </div>
+    </section>
+
+    <!-- ===== ENGLISH ===== -->
+    <section class="lang-en hidden" id="section-en">
+
+      <p class="article-lead" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 17px;">
+        From a mysterious motif at Eiheiji to living craftsmen in Inami — a hidden tradition that most visitors walk right past.
+      </p>
+
+      <div class="section-label">I — Eiheiji: the mystery</div>
+
+      <p class="article-p-en">Walk through the gates of Eiheiji, the 13th-century headquarters of Soto Zen Buddhism deep in the mountains of Fukui, and you expect dragons. You expect lions. Every temple in Japan has them.</p>
+      <p class="article-p-en">What you do not expect is grapes.</p>
+
+      <div class="photo-block">
+        <img src="/images/hokuriku/eiheiji-grape-wide.jpg" alt="Grape carving at Eiheiji, wide view" loading="lazy" />
+        <p class="photo-caption">The grape carving at Eiheiji. Material: zelkova wood (欅, keyaki). Most visitors never look up.</p>
+      </div>
+
+      <p class="article-p-en">The carving is not subtle. Carved in keyaki — Japanese zelkova, prized for its hardness and grain — the composition bursts from the eave bracket in three layers: twisting vine, broad leaves with visible veining, and clusters of individual grapes, each one rounded by hand. The density and relief are extraordinary. Nothing like it exists elsewhere in eastern Japan.</p>
+
+      <div class="photo-block">
+        <img src="/images/hokuriku/eiheiji-grape-close.jpg" alt="Grape carving at Eiheiji, close-up" loading="lazy" />
+        <p class="photo-caption">Close-up of the grape clusters. The depth of relief and precision of each berry make this carving unlike anything typically found in Japanese temple architecture.</p>
+      </div>
+
+      <div class="pull-quote pull-quote-en">
+        <p>"Every Japanese temple has lions and dragons. Eiheiji has grapes. Nobody knows exactly why."</p>
+      </div>
+
+      <p class="article-p-en">Standard Japanese temple iconography draws from a fixed vocabulary — lions, dragons, phoenixes, peonies. The grape motif is almost unclassifiable in this context. Eiheiji belongs to the Soto school of Zen, brought from Song Dynasty China by Dogen in the 13th century. Whether the grape arrived via that Chinese transmission, whether it reflects a craftsman's private symbolism, or whether a patron made an unusual request — no one has definitively answered. The sign beside it says nothing.</p>
+      <p class="article-p-en">That silence is itself remarkable.</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">II — Inside the halls</div>
+
+      <div class="photo-block">
+        <img src="/images/hokuriku/eiheiji-interior-panels.jpg" alt="Interior carved panels at Eiheiji" loading="lazy" />
+        <p class="photo-caption">Interior relief panels at Eiheiji. The structural timbers are Yoshino hinoki cypress and keyaki. The carved panels narrate scenes from Buddhist cosmology across the full width of the hall.</p>
+      </div>
+
+      <p class="article-p-en">Step inside the main halls and the scale expands. Carved relief panels run the full width of the interior walls — figures, waterfalls, clouds, birds — worked to a depth that creates genuine shadow even in the soft temple light. The columns and primary beams are Yoshino hinoki (吉野桧), the most prized Japanese cypress, combined with keyaki throughout.</p>
+      <p class="article-p-en">There is no signage pointing to any of this. The temple does not advertise its woodwork. The craftsmanship is simply there, waiting.</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">III — Inami: where the tradition is still alive</div>
+
+      <p class="article-p-en">Two hours south by road, in the town of Inami in Toyama Prefecture, the question of craft becomes an answer — though not the one you expected.</p>
+      <p class="article-p-en">Inami is the center of a wood carving tradition tied to Jodo Shinshu Buddhism — a different lineage from Eiheiji's Soto Zen entirely. The craftsmen work primarily in kusunoki (楠, camphor wood), a material with a distinctive aromatic quality and tight grain that allows for extreme undercutting. The motifs here are orthodox: cranes, pine, seasonal flowers.</p>
+
+      <div class="photo-block">
+        <img src="/images/hokuriku/inami-craftsman.jpg" alt="Inami craftsman at work" loading="lazy" />
+        <p class="photo-caption">An Inami craftsman at work, photographed through the workshop window. The panels behind him will eventually become architectural elements in a temple commission. The tools before him number in the dozens.</p>
+      </div>
+
+      <p class="article-p-en">What makes Inami exceptional is visibility. The workshops line the main street. You can stand at the glass and watch a master carver work in real time — the same posture, the same tools, the same material as craftsmen here four centuries ago. Nothing is machined. Nothing is repeated by mold.</p>
+
+      <div class="photo-block">
+        <img src="/images/hokuriku/inami-temple-eave.jpg" alt="Temple eave at Zuisenji, Inami" loading="lazy" />
+        <p class="photo-caption">The eave underside of Zuisenji temple in Inami. Where Eiheiji places a single carving at one bracket point, Inami covers the entire structural surface. Walking beneath the building is an experience of total immersion.</p>
+      </div>
+
+      <p class="article-p-en">The scale is different from Eiheiji. Where Eiheiji places a single mysterious motif at one bracket, Inami covers entire structural surfaces — the full length of the eave, every bracket, every beam end. The carving does not punctuate the architecture; it becomes it.</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">IV — Stone abroad, wood at home</div>
+
+      <p class="article-p-en">The Sagrada Família in Barcelona. The Ponte Sant'Angelo in Rome. European stone carving demands to be seen. The façade explodes outward into the street. The angels stand open to wind and rain, whitened by centuries of weather. Being seen is the point.</p>
+
+      <div class="photo-block">
+        <img src="/images/hokuriku/sagrada-familia.jpg" alt="Sagrada Família, Barcelona" loading="lazy" />
+        <p class="photo-caption">Sagrada Família, Barcelona. Limestone carving covers the entire façade, pressing outward toward the street. Stone carving is built to be exposed.</p>
+      </div>
+
+      <p class="article-p-en">Japanese wood carving hides. It retreats under eaves, into interior halls, behind paper screens. The grape carving at Eiheiji is not displayed — it is sheltered. Keyaki wood survives only by avoiding rain and direct sun. That is why nobody looks up. That is why nobody knows.</p>
+
+      <div class="photo-block">
+        <img src="/images/hokuriku/castel-santangelo.jpg" alt="Ponte Sant'Angelo, Rome" loading="lazy" />
+        <p class="photo-caption">Ponte Sant'Angelo, Rome. Bernini's angels line the bridge, open to centuries of weather. Stone completes itself through exposure.</p>
+      </div>
+
+      <p class="article-p-en">Stone carves itself complete through exposure. Wood survives only through protection. That difference changes everything about how a carving exists in the world. Where European sculpture opens toward the city, Japanese wood carving deepens inward, into the architecture that shelters it.</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">V — Two traditions, one region</div>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <p class="compare-card-title">Eiheiji, Fukui</p>
+          <p class="compare-card-body" style="font-family: var(--sans);">Soto Zen · keyaki wood<br>One mystery · question without answer</p>
+        </div>
+        <div class="compare-card">
+          <p class="compare-card-title">Inami, Toyama</p>
+          <p class="compare-card-body" style="font-family: var(--sans);">Jodo Shinshu · camphor wood<br>Living craft · tradition in motion</p>
+        </div>
+      </div>
+
+      <p class="article-p-en">Eiheiji made me ask why. Inami showed me how. Neither answered the other's question — and that is precisely what makes Hokuriku worth the trip.</p>
+      <p class="article-p-en">Most foreign visitors follow the Kyoto–Osaka–Tokyo corridor. Hokuriku sits off that axis. Accessible since the Shinkansen extension, but still quiet enough that on a weekday morning at Eiheiji, no one else was looking up at the grape carving.</p>
+      <p class="article-p-en">Look up.</p>
+
+      <div class="cta-block">
+        <p style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 16px; line-height: 1.8;">If you're drawn to Japanese craft and art, visit <a href="https://www.etsy.com/shop/AnimArtJapan" target="_blank" rel="noopener">AnimArtJapan</a> — a small shop celebrating Japan's artistic traditions through digital art prints.</p>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">Hokuriku</span>
+        <span class="tag">Eiheiji</span>
+        <span class="tag">Zuisenji</span>
+        <span class="tag">Inami wood carving</span>
+        <span class="tag">Japan off the beaten path</span>
+        <span class="tag">Japanese craft</span>
+        <span class="tag">temple architecture</span>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function setLang(lang) {
+      document.getElementById('section-ja').classList.toggle('hidden', lang !== 'ja');
+      document.getElementById('section-en').classList.toggle('hidden', lang !== 'en');
+      document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    }
+  </script>
+
+</body>
+</html>
