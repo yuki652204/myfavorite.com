@@ -4,6 +4,7 @@ description: "AWSでデプロイ経験はあれど『アドレスバーを叩い
 pubDate: 2026-05-29
 tags: ["OpenShift", "Kubernetes", "インフラ", "未経験", "現場"]
 lang: "ja"
+heroImage: "/images/openshift-terminal.png"
 ---
 
 ## はじめに
