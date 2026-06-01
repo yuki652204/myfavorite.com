@@ -1,0 +1,314 @@
+---
+// src/pages/native-japanese-02.astro
+const title = "設計したのは山だった | The Architect Was the Forest";
+const description = "建具屋や大工から聞いた話をもとに。無垢と無印の違い、木造建築の本当の理由。Native Japanese 第2回。";
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1a1814;
+      --ink-light: #4a4540;
+      --ink-muted: #8a8278;
+      --paper: #f7f4ef;
+      --paper-warm: #ede9e2;
+      --accent: #8b6914;
+      --accent-light: #c4a44a;
+      --border: rgba(26,24,20,0.12);
+      --serif-ja: 'Noto Serif JP', serif;
+      --serif-en: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Noto Sans JP', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--serif-ja);
+      font-size: 16px;
+      line-height: 2;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* HEADER */
+    .site-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .site-logo { font-family: var(--serif-en); font-size: 20px; font-weight: 400; color: var(--ink); text-decoration: none; letter-spacing: 0.04em; }
+    .lang-toggle { display: flex; gap: 0; border: 0.5px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .lang-toggle button { background: transparent; border: none; padding: 6px 14px; font-family: var(--sans); font-size: 12px; cursor: pointer; color: var(--ink-muted); transition: background 0.2s, color 0.2s; }
+    .lang-toggle button.active { background: var(--ink); color: var(--paper); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: clamp(300px, 50vw, 520px);
+      overflow: hidden;
+    }
+    .hero img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, rgba(26,24,20,0.55) 100%); }
+    .hero-title-block {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 3;
+      width: 90%;
+    }
+    .hero-series { font-family: var(--sans); font-size: 11px; letter-spacing: 0.14em; color: rgba(247,244,239,0.7); text-transform: uppercase; margin-bottom: 0.5rem; }
+    .hero-h1-ja { font-family: var(--serif-ja); font-size: clamp(20px, 3.5vw, 32px); font-weight: 500; color: #f7f4ef; line-height: 1.5; margin-bottom: 0.25rem; }
+    .hero-h1-en { font-family: var(--serif-en); font-size: clamp(13px, 2vw, 18px); font-style: italic; color: rgba(247,244,239,0.75); }
+
+    /* ARTICLE */
+    .article-container { max-width: 720px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+    .lang-ja, .lang-en { display: block; }
+    .lang-ja.hidden, .lang-en.hidden { display: none; }
+
+    /* TYPOGRAPHY */
+    .article-lead { font-size: 15px; color: var(--ink-muted); border-left: 2px solid var(--accent-light); padding-left: 1.25rem; margin-bottom: 3rem; line-height: 2; border-radius: 0; }
+    .section-label { font-family: var(--sans); font-size: 11px; letter-spacing: 0.12em; color: var(--accent); margin: 3rem 0 1rem; display: flex; align-items: center; gap: 10px; }
+    .section-label::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
+    .article-p { font-size: 16px; line-height: 2.1; color: var(--ink); margin-bottom: 1.5rem; }
+    .article-p-en { font-family: var(--serif-en); font-size: 17px; line-height: 1.9; color: var(--ink); margin-bottom: 1.5rem; }
+    .pull-quote { margin: 2rem 0; padding: 1rem 1.5rem; border-left: 2px solid var(--accent); border-radius: 0; }
+    .pull-quote p { font-size: 17px; color: var(--ink-light); line-height: 2; }
+    .pull-quote-en p { font-family: var(--serif-en); font-size: 19px; font-style: italic; }
+
+    /* PHOTO */
+    .photo-block { margin: 2rem -1rem; }
+    .photo-block img { width: 100%; display: block; border-radius: 4px; }
+    .photo-caption { font-family: var(--sans); font-size: 12px; color: var(--ink-muted); padding: 0.6rem 1rem 0; line-height: 1.7; border-top: 0.5px solid var(--border); margin-top: 0.5rem; }
+
+    /* COMPARE */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; }
+    .compare-card { background: var(--paper-warm); border: 0.5px solid var(--border); border-radius: 6px; padding: 1.25rem; }
+    .compare-card-title { font-family: var(--sans); font-size: 12px; font-weight: 500; color: var(--accent); margin-bottom: 0.5rem; }
+    .compare-card-body { font-family: var(--sans); font-size: 13px; color: var(--ink-light); line-height: 1.9; }
+
+    /* CTA */
+    .cta-block { margin: 3rem 0 0; padding: 1.5rem; background: var(--paper-warm); border: 0.5px solid var(--border); border-radius: 6px; }
+    .cta-block p { font-family: var(--sans); font-size: 14px; color: var(--ink-light); line-height: 1.8; margin: 0; }
+    .cta-block a { color: var(--accent); text-decoration: none; border-bottom: 0.5px solid var(--accent-light); padding-bottom: 1px; }
+
+    /* TAGS */
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2.5rem; }
+    .tag { font-family: var(--sans); font-size: 11px; color: var(--ink-muted); border: 0.5px solid var(--border); border-radius: 3px; padding: 3px 10px; }
+
+    .section-divider { border: none; border-top: 0.5px solid var(--border); margin: 2.5rem 0; }
+
+    @media (max-width: 600px) {
+      .hero { height: 260px; }
+      .compare-grid { grid-template-columns: 1fr; }
+      .article-container { padding: 2rem 1.25rem 4rem; }
+      .photo-block { margin: 1.5rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="site-logo">myfavorite</a>
+    <div class="lang-toggle">
+      <button class="active" id="btn-ja" onclick="setLang('ja')">日本語</button>
+      <button id="btn-en" onclick="setLang('en')">English</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <img src="/images/native-japanese/forest-chainsaw.jpg" alt="東北の杉山での伐採" loading="eager" />
+    <div class="hero-overlay"></div>
+    <div class="hero-title-block">
+      <p class="hero-series">Native Japanese — No. 2</p>
+      <h1 class="hero-h1-ja">設計したのは山だった</h1>
+      <p class="hero-h1-en">The Architect Was the Forest</p>
+    </div>
+  </div>
+
+  <main class="article-container">
+
+    <!-- 日本語 -->
+    <section class="lang-ja" id="section-ja">
+      <p class="article-lead">建具屋や大工から聞いた話をもとに。ほとんどの人はもういない。これはただの記録です。</p>
+
+      <div class="section-label">すべてはここから始まる</div>
+
+      <p class="article-p">実家を建てたとき、誰も建築家を呼ばなかった。大工が自分の山から切り出せる木を見て、あるだけの予算の中で、間に合わせた。それだけのことだ。</p>
+      <p class="article-p">杉山を持つ家は杉で建てた。雑木山しかない家は雑木で建てた。研究者が丁寧に論じる「地域ごとの伝統建築の違い」——梁の太さ、屋根の勾配、室内の比例——は、その土地に何が生えていたかの違いにすぎない場合が多い。</p>
+
+      <div class="pull-quote"><p>設計したのは山だった。大工はただ、山の声を聞いた。</p></div>
+
+      <p class="article-p">これはロマンチックな話ではない。実用の話だ。自分の山の木は、手間以外にはタダだ。あるものを使う。材料が許す形に建てる。</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">梁が覚えていること</div>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/farmhouse-beams.jpg" alt="東北古民家の煤けた梁と木組みの天井" loading="lazy" />
+        <p class="photo-caption">東北の古民家の内部。囲炉裏の煙で何世代もかけて黒くなった梁。釘なし、金物なし。木が木を支えて、百年以上立っている。</p>
+      </div>
+
+      <p class="article-p">この梁を見てほしい。均一ではない。木が曲がって育ったところは、梁も少し曲がっている。大工は木を形に従わせなかった。木が持っている形を読んで、そこに合わせた。</p>
+      <p class="article-p">外に向かって曲がる梁は、その曲がりが荷重を自然に受ける外側に使われた。内に向かって曲がるものは別の場所に。無駄にしたものは何もない。強引に使ったものも何もない。</p>
+      <p class="article-p">写真の継ぎ手に釘は一本もない。ほぞとほぞ穴、楔で締めた仕口。地震で建物が動いても、割れずに追従する。これは哲学ではない。建物が倒れるのを見て、なぜ倒れたかを考えた結果の工学だ。</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">無印が売れないもの</div>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/keyaki-door-grain.jpg" alt="年月を経たケヤキの板戸。渦を巻く木目" loading="lazy" />
+        <p class="photo-caption">ケヤキの引き戸、何十年もかけて経年した木目。三方向に動く杢。同じパネルは一枚もない。これが生きていた木の表情だ。</p>
+      </div>
+
+      <p class="article-p">これはケヤキだ。硬く、密で、摩擦に強い。扉・敷居・何千回も触れるものに使われた。美しいからではない。持つからだ。</p>
+      <p class="article-p">木目を見てほしい。水が岩を回るように渦を巻いている。一枚一枚が違う。木が違う育ち方をしたから。品質管理はここにない。あるのは木だけだ。</p>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <p class="compare-card-title">無印（Muji）</p>
+          <p class="compare-card-body">デザインとしてのシンプル。均質が美学。不完全さはあなたの目に届く前に取り除かれている。</p>
+        </div>
+        <div class="compare-card">
+          <p class="compare-card-title">無垢（Muku）</p>
+          <p class="compare-card-body">自然のままのシンプル。不完全さが素材そのもの。木がそうだったように、あなたはそれと暮らす。そして年月とともに変わっていく表情を楽しむ。</p>
+        </div>
+      </div>
+
+      <p class="article-p">無印良品は「日本的なシンプルさ」という概念でグローバルブランドを作った。良いブランドだと思う。ただ、そこで売られているシンプルさは製造されたものだ——ばらつきは削られ、節は除かれ、すべての面が均一にされている。</p>
+      <p class="article-p">この写真の扉はその逆だ。育ったように育った木から作られた。大工は手元にあるものを使った。結果として生まれたのは、どの工場も再現できないもの——そもそも設計されていなかったのだから。</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">大工が実際に言っていたこと</div>
+
+      <p class="article-p">私は建築家でも研究者でもない。こういう家で育って、似たようなものを建てた建具屋や大工たちと話をしてきた。ほとんどの人はもういない。</p>
+      <p class="article-p">彼らが言っていたのは、つまるところこういうことだった。山が出してくれるものを使う。必要な場所に合わせて刻む。自分がいなくなった後も立っているものを作る。</p>
+      <p class="article-p">20世紀になって西洋の建築理論が日本に来て、こういう家を見て言った——「これが間の哲学だ」「負の空間の美学だ」「禅的な素材へのアプローチだ」。大工たちはきっと、首をかしげただろう。家を建てていただけなのだから。</p>
+      <p class="article-p">美しさは本物だった。哲学は後から、鑿を一度も持ったことのない人たちが付け加えた。</p>
+
+      <div class="cta-block">
+        <p>日本の工芸や素材文化に興味があれば、<a href="https://www.etsy.com/shop/AnimArtJapan" target="_blank" rel="noopener">AnimArtJapan</a> をのぞいてみてください。日本の美意識をテーマにしたデジタルアートプリントを販売しています。</p>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">Native Japanese</span>
+        <span class="tag">日本の家</span>
+        <span class="tag">木造建築</span>
+        <span class="tag">東北</span>
+        <span class="tag">ケヤキ</span>
+        <span class="tag">指物</span>
+        <span class="tag">無垢</span>
+        <span class="tag">職人</span>
+      </div>
+    </section>
+
+    <!-- English -->
+    <section class="lang-en hidden" id="section-en">
+      <p class="article-lead" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 17px;">What I learned about Japanese houses from the carpenters and cabinetmakers who built them — most of whom are gone now. This is just what they told me.</p>
+
+      <div class="section-label">Where it begins</div>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/forest-chainsaw.jpg" alt="Chainsaw resting on a felled log in a Japanese cedar forest" loading="lazy" />
+        <p class="photo-caption">A cedar forest in Tohoku, mid-harvest. The house starts here — not at the architect's desk.</p>
+      </div>
+
+      <p class="article-p-en">Nobody hired an architect to design my family's house. The carpenter looked at what was available — timber from our own mountain, a budget that was what it was — and built accordingly.</p>
+      <p class="article-p-en">Families with cedar forests built cedar houses. Families with mixed woodland built with whatever grew there. The regional character of Japanese traditional architecture that scholars write about so carefully was mostly a function of what happened to be growing nearby.</p>
+
+      <div class="pull-quote pull-quote-en"><p>"The forest was the architect. The carpenter just listened."</p></div>
+
+      <p class="article-p-en">This is not a romantic idea. It is a practical one. Wood from your own mountain costs nothing but labor. You use what you have. You build what the material allows.</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">What the beams remember</div>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/farmhouse-beams.jpg" alt="Ancient smoke-blackened beams and timber frame of a Japanese farmhouse" loading="lazy" />
+        <p class="photo-caption">The interior of a Tohoku farmhouse. The beams are black from generations of hearth smoke. No nails. No metal brackets. The wood has been holding itself up for over a century.</p>
+      </div>
+
+      <p class="article-p-en">Look at those beams. They are not uniform. They curve slightly where the tree curved. The carpenter did not force the wood into a shape — he found the shape that was already there and worked with it.</p>
+      <p class="article-p-en">There are no nails in the joints. The connections are cut — mortise and tenon, wedged and fitted — so that the structure can move slightly in an earthquake without cracking. This is not philosophy. It is engineering that came from watching buildings fall down and figuring out why.</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">What Muji cannot sell</div>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/keyaki-door-grain.jpg" alt="Close-up of weathered keyaki wood grain on traditional Japanese sliding doors" loading="lazy" />
+        <p class="photo-caption">Keyaki sliding doors, weathered over decades. The grain moves in three directions at once. No two panels are alike. This is what wood looks like when it has been alive.</p>
+      </div>
+
+      <p class="article-p-en">This is keyaki — Japanese zelkova. Hard, dense, resistant to wear. It was used for doors, thresholds, anything touched thousands of times. Not because it was beautiful. Because it lasted.</p>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <p class="compare-card-title">Muji (無印)</p>
+          <p class="compare-card-body">Plain by design. Uniformity as aesthetic. The imperfections are removed before you see it.</p>
+        </div>
+        <div class="compare-card">
+          <p class="compare-card-title">Muku (無垢)</p>
+          <p class="compare-card-body">Plain by nature. The imperfections are the material. You live with what the tree was — and enjoy watching it change with the years.</p>
+        </div>
+      </div>
+
+      <p class="article-p-en">Muji built a global brand on the idea of Japanese simplicity. It is a good brand. But the simplicity it sells is manufactured — every variation sanded away, every knot eliminated, every surface made consistent.</p>
+      <p class="article-p-en">The doors in this photograph are the opposite. They were made from a tree that grew the way it grew. The result is something no factory can reproduce, because it was never designed in the first place.</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">What the carpenters actually said</div>
+
+      <p class="article-p-en">I am not an architect. I am not a historian. I grew up in one of these houses, and I spent time with the carpenters and cabinetmakers who built things like it. Most of them are gone now.</p>
+      <p class="article-p-en">What they told me was this: use what the mountain gives you, cut it to fit where it needs to go, and build something that will still be standing when you are not.</p>
+      <p class="article-p-en">Western design theory came to Japan and said: this is the philosophy of Ma, the aesthetics of negative space, the Zen approach to material. The carpenters would have found this baffling. They were just building houses.</p>
+      <p class="article-p-en">The beauty was real. The philosophy was added later, by people who had never held a chisel.</p>
+
+      <div class="cta-block">
+        <p style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 16px; line-height: 1.8;">If you are drawn to Japanese craft and the real material culture behind it, visit <a href="https://www.etsy.com/shop/AnimArtJapan" target="_blank" rel="noopener">AnimArtJapan</a> — a small shop celebrating Japan's artistic traditions through digital art prints.</p>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">Native Japanese</span>
+        <span class="tag">Japanese houses</span>
+        <span class="tag">wood carving</span>
+        <span class="tag">Tohoku</span>
+        <span class="tag">keyaki</span>
+        <span class="tag">traditional carpentry</span>
+        <span class="tag">Muji</span>
+        <span class="tag">off the beaten path</span>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function setLang(lang) {
+      document.getElementById('section-ja').classList.toggle('hidden', lang !== 'ja');
+      document.getElementById('section-en').classList.toggle('hidden', lang !== 'en');
+      document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    }
+  </script>
+
+</body>
+</html>
