@@ -6,13 +6,19 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
-const posts = (await getCollection('blog'))
+const PAGE_SIZE = 5;
+const currentPage = 1;
+
+const allPosts = (await getCollection('blog'))
   .filter(p => p.data.title)
   .sort((a, b) => {
     const da = a.data.pubDate ? new Date(a.data.pubDate).valueOf() : 0;
     const db = b.data.pubDate ? new Date(b.data.pubDate).valueOf() : 0;
     return db - da;
   });
+
+const posts = allPosts.slice(0, PAGE_SIZE);
+const totalPages = Math.ceil(allPosts.length / PAGE_SIZE);
 ---
 
 <!doctype html>
@@ -280,6 +286,14 @@ const posts = (await getCollection('blog'))
         <p class="card-desc">On live-edge slabs, figured grain, buried trees, and why furniture can make you think about time.</p>
       </div>
     </a>
+
+<!-- ページネーション -->
+<div style="display:flex;justify-content:center;gap:0.5rem;margin-top:2rem;">
+  <span style="padding:6px 14px;border-radius:6px;background:rgba(200,168,75,0.2);color:var(--gold);font-size:0.85rem;font-family:var(--sans);">1</span>
+  {Array.from({length: totalPages - 1}, (_, i) => i + 2).map(page => (
+    <a href={`/blog/page/${page}`} style="padding:6px 14px;border-radius:6px;border:0.5px solid rgba(200,168,75,0.3);color:rgba(200,168,75,0.7);font-size:0.85rem;font-family:var(--sans);text-decoration:none;">{page}</a>
+  ))}
+</div>
 
   </div>
 </section>

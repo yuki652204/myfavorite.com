@@ -1,0 +1,175 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../../components/BaseHead.astro';
+import Footer from '../../../components/Footer.astro';
+import FormattedDate from '../../../components/FormattedDate.astro';
+import Header from '../../../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../../consts';
+
+export async function getStaticPaths() {
+  const PAGE_SIZE = 5;
+  const allPosts = (await getCollection('blog'))
+    .filter(p => p.data.title)
+    .sort((a, b) => {
+      const da = a.data.pubDate ? new Date(a.data.pubDate).valueOf() : 0;
+      const db = b.data.pubDate ? new Date(b.data.pubDate).valueOf() : 0;
+      return db - da;
+    });
+
+  const totalPages = Math.ceil(allPosts.length / PAGE_SIZE);
+
+  return Array.from({ length: totalPages - 1 }, (_, i) => ({
+    params: { page: String(i + 2) },
+    props: {
+      posts: allPosts.slice((i + 1) * PAGE_SIZE, (i + 2) * PAGE_SIZE),
+      currentPage: i + 2,
+      totalPages,
+    },
+  }));
+}
+
+const { posts, currentPage, totalPages } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <BaseHead title={`${SITE_TITLE} — ページ ${currentPage}`} description={SITE_DESCRIPTION} />
+    <style>
+      .home-wrap {
+        width: 720px;
+        max-width: calc(100% - 2em);
+        margin: 0 auto;
+        padding: 3em 1em 4em;
+      }
+      .section-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--gold);
+        border-left: 3px solid var(--gold);
+        padding-left: 0.6em;
+        margin: 0 0 1.4rem;
+        letter-spacing: 0.05em;
+      }
+      .card-grid { display: grid; gap: 1.2rem; }
+      .card {
+        display: flex;
+        gap: 1rem;
+        background: rgb(var(--navy2));
+        border: 0.5px solid rgba(200, 168, 75, 0.2);
+        border-radius: 10px;
+        overflow: hidden;
+        text-decoration: none;
+        transition: border-color 0.2s, transform 0.2s;
+      }
+      .card:hover { border-color: rgba(200, 168, 75, 0.6); transform: translateY(-2px); }
+      .card-thumb { width: 110px; flex-shrink: 0; overflow: hidden; }
+      .card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .card-thumb-placeholder {
+        width: 110px;
+        height: 100%;
+        background: rgba(200, 168, 75, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        flex-shrink: 0;
+      }
+      .card-body { padding: 0.9rem 1rem 0.9rem 0; flex: 1; min-width: 0; }
+      .card-date { font-size: 0.78rem; color: rgba(200, 168, 75, 0.6); margin: 0 0 0.3rem; }
+      .card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: rgb(var(--white));
+        margin: 0 0 0.3rem;
+        line-height: 1.4;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .card-desc {
+        font-size: 0.85rem;
+        color: rgba(245, 242, 238, 0.6);
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 2rem;
+      }
+      .pagination a, .pagination span {
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-family: var(--sans);
+        text-decoration: none;
+      }
+      .pagination span {
+        background: rgba(200, 168, 75, 0.2);
+        color: var(--gold);
+      }
+      .pagination a {
+        border: 0.5px solid rgba(200, 168, 75, 0.3);
+        color: rgba(200, 168, 75, 0.7);
+      }
+      .pagination a:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+      @media (max-width: 540px) {
+        .card-thumb, .card-thumb-placeholder { width: 80px; }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main class="home-wrap">
+      <section>
+        <h2 class="section-title">記事一覧 — ページ {currentPage}</h2>
+        <div class="card-grid">
+          {posts.map(post => {
+            const slug = post.id.replace(/\.(md|mdx)$/, '');
+            const url = `/blog/${slug}/`;
+            return (
+              <a class="card" href={url}>
+                {post.data.heroImage ? (
+                  <div class="card-thumb">
+                    <img src={post.data.heroImage} alt={post.data.title} />
+                  </div>
+                ) : (
+                  <div class="card-thumb-placeholder">📝</div>
+                )}
+                <div class="card-body">
+                  {post.data.pubDate && (
+                    <p class="card-date">
+                      <FormattedDate date={new Date(post.data.pubDate)} />
+                    </p>
+                  )}
+                  <p class="card-title">{post.data.title}</p>
+                  {post.data.description && (
+                    <p class="card-desc">{post.data.description}</p>
+                  )}
+                </div>
+              </a>
+            );
+          })}
+        </div>
+
+        <div class="pagination">
+          <a href="/">1</a>
+          {Array.from({ length: totalPages - 1 }, (_, i) => i + 2).map(page => (
+            page === currentPage
+              ? <span>{page}</span>
+              : <a href={`/blog/page/${page}`}>{page}</a>
+          ))}
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
