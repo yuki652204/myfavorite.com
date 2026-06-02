@@ -1,0 +1,209 @@
+---
+// src/pages/ichimai-ita.astro
+const title = "The Wood That Took 300 Years to Become Your Table";
+const description = "On live-edge slabs, figured grain, buried trees, and why a piece of furniture can make you think about time.";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1a1814;
+      --ink-light: #4a4540;
+      --ink-muted: #8a8278;
+      --paper: #f7f4ef;
+      --paper-warm: #ede9e2;
+      --accent: #8b6914;
+      --accent-light: #c4a44a;
+      --border: rgba(26,24,20,0.12);
+      --serif-en: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Noto Sans JP', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--paper); color: var(--ink); font-family: var(--serif-en); font-size: 17px; line-height: 1.9; -webkit-font-smoothing: antialiased; }
+
+    .site-header { padding: 1.5rem 2rem; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .site-logo { font-family: var(--serif-en); font-size: 20px; font-weight: 400; color: var(--ink); text-decoration: none; letter-spacing: 0.04em; }
+
+    .hero { position: relative; width: 100%; height: clamp(300px, 55vw, 560px); overflow: hidden; }
+    .hero img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, rgba(26,24,20,0.6) 100%); }
+    .hero-title-block { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); text-align: center; z-index: 3; width: 90%; }
+    .hero-series { font-family: var(--sans); font-size: 11px; letter-spacing: 0.14em; color: rgba(247,244,239,0.7); text-transform: uppercase; margin-bottom: 0.5rem; }
+    .hero-h1 { font-family: var(--serif-en); font-size: clamp(18px, 3vw, 32px); font-weight: 400; font-style: italic; color: #f7f4ef; line-height: 1.35; }
+
+    .article-container { max-width: 720px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+    .article-lead { font-size: 15px; color: var(--ink-muted); border-left: 2px solid var(--accent-light); padding-left: 1.25rem; margin-bottom: 3rem; line-height: 1.9; font-family: var(--sans); }
+    .section-label { font-family: var(--sans); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 3rem 0 1rem; display: flex; align-items: center; gap: 10px; }
+    .section-label::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
+    .article-p { font-size: 17px; line-height: 1.9; color: var(--ink); margin-bottom: 1.5rem; }
+    .pull-quote { margin: 2rem 0; padding: 1rem 1.5rem; border-left: 2px solid var(--accent); border-radius: 0; }
+    .pull-quote p { font-size: 19px; font-style: italic; color: var(--ink-light); line-height: 1.8; margin: 0; }
+    .photo-block { margin: 2rem -1rem; }
+    .photo-block img { width: 100%; display: block; border-radius: 4px; }
+    .photo-caption { font-family: var(--sans); font-size: 12px; color: var(--ink-muted); padding: 0.6rem 1rem 0; line-height: 1.7; border-top: 0.5px solid var(--border); margin-top: 0.5rem; }
+    .section-divider { border: none; border-top: 0.5px solid var(--border); margin: 2.5rem 0; }
+    .info-box { background: var(--paper-warm); border: 0.5px solid var(--border); border-radius: 6px; padding: 1.5rem; margin: 2rem 0; }
+    .info-box-title { font-family: var(--sans); font-size: 12px; font-weight: 500; color: var(--accent); margin-bottom: 1rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .info-box p { font-size: 15px; line-height: 1.9; color: var(--ink-light); margin-bottom: 0.8rem; }
+    .info-box p:last-child { margin-bottom: 0; }
+    .process-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    .process-card { background: var(--paper-warm); border: 0.5px solid var(--border); border-radius: 6px; padding: 1rem; }
+    .process-card-title { font-family: var(--sans); font-size: 11px; font-weight: 500; color: var(--accent); margin-bottom: 0.4rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .process-card-body { font-family: var(--sans); font-size: 13px; color: var(--ink-light); line-height: 1.8; }
+    .cta-block { margin: 3rem 0 0; padding: 1.5rem; background: var(--paper-warm); border: 0.5px solid var(--border); border-radius: 6px; }
+    .cta-block p { font-family: var(--sans); font-size: 14px; color: var(--ink-light); line-height: 1.8; margin: 0; }
+    .cta-block a { color: var(--accent); text-decoration: none; border-bottom: 0.5px solid var(--accent-light); padding-bottom: 1px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2.5rem; }
+    .tag { font-family: var(--sans); font-size: 11px; color: var(--ink-muted); border: 0.5px solid var(--border); border-radius: 3px; padding: 3px 10px; }
+
+    @media (max-width: 600px) {
+      .hero { height: 260px; }
+      .article-container { padding: 2rem 1.25rem 4rem; }
+      .photo-block { margin: 1.5rem 0; }
+      .process-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="site-logo">myfavorite</a>
+  </header>
+
+  <div class="hero">
+    <img src="/images/ichimai-ita/keyaki-finished.jpg" alt="Finished keyaki live-edge slab table, figured grain" loading="eager" />
+    <div class="hero-overlay"></div>
+    <div class="hero-title-block">
+      <p class="hero-series">Native Japanese — Wood</p>
+      <h1 class="hero-h1">The Wood That Took 300 Years to Become Your Table</h1>
+    </div>
+  </div>
+
+  <main class="article-container">
+
+    <p class="article-lead">On live-edge slabs, figured grain, buried trees, and why a piece of furniture can make you think about time.</p>
+
+    <div class="section-label">I — Do you have wood in your daily life?</div>
+
+    <p class="article-p">If not, I would suggest starting somewhere. Not necessarily a dining table — a desk, a bench, a shelf, a floorboard. Something you will touch every day. Something that will look different in ten years than it does today.</p>
+
+    <p class="article-p">A piece with knots is better than one without. A clean, clear board is predictable — you look at it once and you have seen it. A board with a knot, a crack, a patch of figured grain: that one you keep looking at. The bark edge left natural on the outside — the live edge — is the same. It does not get boring. It was never designed to be looked at. It just grew that way.</p>
+
+    <div class="pull-quote"><p>"The tree did not know it was going to become a table. That is what makes it interesting."</p></div>
+
+    <hr class="section-divider" />
+
+    <div class="section-label">II — What is moku? The grain that is not grain</div>
+
+    <div class="photo-block">
+      <img src="/images/ichimai-ita/keyaki-finished.jpg" alt="Figured keyaki grain — moku pattern swirling around knots" loading="lazy" />
+      <p class="photo-caption">Finished keyaki (zelkova) slab. The pattern around the knots — the eddying, three-dimensional figure — is called moku (杢). It is not the same as grain. It is what happens when the wood grew under stress.</p>
+    </div>
+
+    <p class="article-p">Japanese woodworkers distinguish between grain (木目, mokume) and figure (杢, moku). Grain is the linear pattern that runs through all wood. Figure is something else — a three-dimensional optical effect that appears in certain trees under certain conditions, where the light catches the wood differently depending on the angle.</p>
+
+    <p class="article-p">The most prized figure in Japan is 縮杢 (chijimi-moku) — ripple figure, sometimes called "fiddleback" in the West. It appears most often in wood that grew slowly under stress: rocky mountainsides, poor soil, crowded canopy. The tree had to work harder to get big. That difficulty is what left the mark.</p>
+
+    <p class="article-p">Recently, tochi (horse chestnut) and kaede (maple) have overtaken keyaki in popularity for slabs. Their ripple figure has a luminous, wave-like quality that changes dramatically with the light. Women in particular seem drawn to it — there is something about the way it catches the eye that is genuinely hard to look away from.</p>
+
+    <hr class="section-divider" />
+
+    <div class="section-label">III — Why it costs what it costs</div>
+
+    <div class="photo-block">
+      <img src="/images/ichimai-ita/tochi-rough.jpg" alt="Rough-sawn tochi slab showing bandsaw marks before finishing" loading="lazy" />
+      <p class="photo-caption">A tochi (horse chestnut) slab fresh from rough sawing. The bandsaw marks are visible across the surface. From here, flattening, sanding, crack treatment, and finishing will take many hours of work.</p>
+    </div>
+
+    <p class="article-p">Most large hardwood trees are hollow in the centre or have fractured under their own weight. A slab-quality log — solid through, free of rot, large enough to be interesting — is genuinely rare. When you find one with figure on top of that, you are looking at something that may not exist again in your lifetime.</p>
+
+    <p class="article-p">The price reflects what happened before you saw it. Getting the log out of the mountain. Moving it to a mill with equipment large enough to handle it — a standard mill cannot cut a 90cm diameter log. Air-drying for years (rushing it causes cracking). The finishing work. All of that is in the price.</p>
+
+    <div class="info-box">
+      <p class="info-box-title">Size and price — the rough numbers</p>
+      <p>Most hardwood species stop growing dramatically in diameter once they reach about 75cm. At 91cm and above, price increases sharply — the logs are rarer and the mills fewer. With figure, add more again.</p>
+      <p>A decent figured tochi or keyaki dining table in Japan starts around ¥500,000 and goes up quickly from there. A spectacular piece with deep ripple figure and a clean live edge can reach ¥3,000,000 or more. These are not luxury prices in the way that a branded handbag is expensive. The material genuinely took centuries to exist.</p>
+    </div>
+
+    <hr class="section-divider" />
+
+    <div class="section-label">IV — The buried trees</div>
+
+    <div class="photo-block">
+      <img src="/images/ichimai-ita/jindai-nara.jpg" alt="Jindai nara (bog oak) slab — grey-green colour from centuries underground" loading="lazy" />
+      <p class="photo-caption">A jindai nara (神代ナラ) slab — bog oak preserved underground for thousands of years. The grey-green colour comes from centuries of anaerobic burial. This piece was photographed before finishing; the colour deepens considerably with oil.</p>
+    </div>
+
+    <p class="article-p">There is a category of wood called 神代木 (jindai-ki) — "wood of the age of the gods." These are trees that were buried, typically by volcanic eruption or landslide, and preserved underground for centuries or millennia without rotting. They are found during construction or excavation, identified, and carefully milled.</p>
+
+    <p class="article-p">The most famous source is Chokai-san in Yamagata Prefecture. A volcanic eruption buried a forest there. Dam construction work in the 20th century uncovered the logs. Carbon dating placed them at approximately 2,500 years underground. Many had been living trees of 1,000 years or more before the eruption — making the oldest pieces around 3,500 years old in total.</p>
+
+    <p class="article-p">The colour is unmistakable. Jindai sugi (buried cedar) turns a deep grey-brown. Jindai keyaki goes dark and complex. Jindai nara — as in the photograph — develops a grey-green that looks almost mineral. Some pieces have carbonised to the point that woodworking tools cannot cut them; those go to stone-cutters instead.</p>
+
+    <div class="pull-quote"><p>"You are not buying old wood. You are buying something that was alive before the Roman Empire."</p></div>
+
+    <hr class="section-divider" />
+
+    <div class="section-label">V — Finishing it yourself</div>
+
+    <div class="photo-block">
+      <img src="/images/ichimai-ita/chigiri-work.jpg" alt="Chigiri (butterfly key) being fitted into a crack in a slab" loading="lazy" />
+      <p class="photo-caption">A 契り (chigiri) — butterfly key — being fitted across a crack in a slab. The chigiri is cut from a contrasting wood (here, tetsuto or black persimmon) with the grain running perpendicular to the crack to resist splitting. Getting the grain direction wrong is a common mistake.</p>
+    </div>
+
+    <p class="article-p">I have finished several slabs myself. I am not a professional — I do not have a hand plane technique good enough to handle reverse grain without tearing it. So I use a sander. 80 grit, then 120, 180, 240. It takes longer than you expect, especially on hard species like keyaki or tamo. Tochi and sugi are softer and go faster.</p>
+
+    <p class="article-p">Cracks are filled with cyanoacrylate mixed with fine sawdust from the same board. Larger cracks get a chigiri — a butterfly-shaped insert cut from a contrasting wood, fitted across the crack to hold it. I have used tetsuto-boku (Malabar ebony) and kuro-gaki (black persimmon). The grain of the chigiri must run perpendicular to the crack. If you get it wrong, the insert splits instead of holding.</p>
+
+    <div class="process-grid">
+      <div class="process-card">
+        <p class="process-card-title">Finish: Urethane</p>
+        <p class="process-card-body">Hard, durable, maintenance-free. Soy sauce and cooking oil wipe off cleanly. The surface looks sealed because it is. Good for families with children.</p>
+      </div>
+      <div class="process-card">
+        <p class="process-card-title">Finish: Natural oil</p>
+        <p class="process-card-body">The wood breathes. The grain feels tactile, not coated. Soy sauce and oil will stain permanently. Needs re-oiling every few years. Worth it for the feel.</p>
+      </div>
+    </div>
+
+    <p class="article-p">Even with power tools, the sanding alone on a large slab runs to many hours. A dining table is a significant commitment of time before it becomes furniture. That is also part of what makes it yours.</p>
+
+    <hr class="section-divider" />
+
+    <div class="section-label">The conclusion</div>
+
+    <p class="article-p">Heavy. Expensive. Moves with the seasons — warps slightly in humidity, may crack if directly under an air conditioner. None of this is a flaw. It is wood. It was never going to behave like a laminate sheet.</p>
+
+    <p class="article-p">But as a long-term proposition, satisfaction per year, per decade: I have not found better. You live with it. It changes. You notice things in the grain you did not see before. It gets better.</p>
+
+    <p class="article-p">If you do not have something made of real wood in your daily life, start somewhere small. A cutting board. A shelf. See if you start looking at it.</p>
+
+    <div class="cta-block">
+      <p>If you're drawn to Japanese craft and material culture, visit <a href="https://www.etsy.com/shop/AnimArtJapan" target="_blank" rel="noopener">AnimArtJapan</a> — a small shop celebrating Japan's artistic traditions through digital art prints.</p>
+    </div>
+
+    <div class="tag-row">
+      <span class="tag">live edge slab</span>
+      <span class="tag">ichimai ita</span>
+      <span class="tag">Japanese woodworking</span>
+      <span class="tag">moku figure</span>
+      <span class="tag">jindai wood</span>
+      <span class="tag">keyaki</span>
+      <span class="tag">tochi</span>
+      <span class="tag">Native Japanese</span>
+    </div>
+
+  </main>
+
+</body>
+</html>
