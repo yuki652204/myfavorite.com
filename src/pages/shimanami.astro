@@ -1,0 +1,194 @@
+---
+// src/pages/shimanami.astro
+const title = "The Island Road — Shimanami Kaido, A 3,000-Year-Old Shrine, and a Station That Stops Time";
+const description = "Cycling from Oshima to Imabari, a New Year's visit to Japan's oldest shrine, and a train station where foreign photographers outnumber locals.";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1a1814;
+      --ink-light: #4a4540;
+      --ink-muted: #8a8278;
+      --paper: #f7f4ef;
+      --paper-warm: #ede9e2;
+      --accent: #8b6914;
+      --accent-light: #c4a44a;
+      --border: rgba(26,24,20,0.12);
+      --serif-en: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Noto Sans JP', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--paper); color: var(--ink); font-family: var(--serif-en); font-size: 17px; line-height: 1.9; -webkit-font-smoothing: antialiased; }
+
+    /* HEADER */
+    .site-header { padding: 1.5rem 2rem; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .site-logo { font-family: var(--serif-en); font-size: 20px; font-weight: 400; color: var(--ink); text-decoration: none; letter-spacing: 0.04em; }
+
+    /* HERO */
+    .hero { position: relative; width: 100%; height: clamp(300px, 55vw, 560px); overflow: hidden; }
+    .hero img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, rgba(26,24,20,0.6) 100%); }
+    .hero-title-block { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); text-align: center; z-index: 3; width: 90%; }
+    .hero-series { font-family: var(--sans); font-size: 11px; letter-spacing: 0.14em; color: rgba(247,244,239,0.7); text-transform: uppercase; margin-bottom: 0.5rem; }
+    .hero-h1 { font-family: var(--serif-en); font-size: clamp(18px, 3vw, 30px); font-weight: 400; font-style: italic; color: #f7f4ef; line-height: 1.35; }
+
+    /* ARTICLE */
+    .article-container { max-width: 720px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+    .article-lead { font-size: 15px; color: var(--ink-muted); border-left: 2px solid var(--accent-light); padding-left: 1.25rem; margin-bottom: 3rem; line-height: 1.9; font-family: var(--sans); }
+    .section-label { font-family: var(--sans); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 3rem 0 1rem; display: flex; align-items: center; gap: 10px; }
+    .section-label::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
+    .article-p { font-size: 17px; line-height: 1.9; color: var(--ink); margin-bottom: 1.5rem; }
+    .pull-quote { margin: 2rem 0; padding: 1rem 1.5rem; border-left: 2px solid var(--accent); border-radius: 0; }
+    .pull-quote p { font-size: 19px; font-style: italic; color: var(--ink-light); line-height: 1.8; margin: 0; }
+    .photo-block { margin: 2rem -1rem; }
+    .photo-block img { width: 100%; display: block; border-radius: 4px; }
+    .photo-caption { font-family: var(--sans); font-size: 12px; color: var(--ink-muted); padding: 0.6rem 1rem 0; line-height: 1.7; border-top: 0.5px solid var(--border); margin-top: 0.5rem; }
+    .section-divider { border: none; border-top: 0.5px solid var(--border); margin: 2.5rem 0; }
+    .history-box { background: var(--paper-warm); border: 0.5px solid var(--border); border-radius: 6px; padding: 1.5rem; margin: 2rem 0; }
+    .history-box-title { font-family: var(--sans); font-size: 12px; font-weight: 500; color: var(--accent); margin-bottom: 1rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .history-box p { font-size: 15px; line-height: 1.9; color: var(--ink-light); margin-bottom: 0.8rem; }
+    .history-box p:last-child { margin-bottom: 0; }
+    .cta-block { margin: 3rem 0 0; padding: 1.5rem; background: var(--paper-warm); border: 0.5px solid var(--border); border-radius: 6px; }
+    .cta-block p { font-family: var(--sans); font-size: 14px; color: var(--ink-light); line-height: 1.8; margin: 0; }
+    .cta-block a { color: var(--accent); text-decoration: none; border-bottom: 0.5px solid var(--accent-light); padding-bottom: 1px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2.5rem; }
+    .tag { font-family: var(--sans); font-size: 11px; color: var(--ink-muted); border: 0.5px solid var(--border); border-radius: 3px; padding: 3px 10px; }
+
+    @media (max-width: 600px) {
+      .hero { height: 260px; }
+      .article-container { padding: 2rem 1.25rem 4rem; }
+      .photo-block { margin: 1.5rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="site-logo">myfavorite</a>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <img src="/images/shimanami/shimanami-bridge.jpg" alt="Shimanami Kaido bridge over the Seto Inland Sea" loading="eager" />
+    <div class="hero-overlay"></div>
+    <div class="hero-title-block">
+      <p class="hero-series">Shikoku · New Year's Day 2024</p>
+      <h1 class="hero-h1">The Island Road</h1>
+    </div>
+  </div>
+
+  <main class="article-container">
+
+    <p class="article-lead">Cycling Shimanami Kaido, a New Year's visit to Japan's oldest shrine, and a train station where foreign photographers outnumber locals.</p>
+
+    <div class="section-label">I — The bridge between islands</div>
+
+    <div class="photo-block">
+      <img src="/images/shimanami/shimanami-bridge.jpg" alt="Shimanami Kaido suspension bridge spanning the Seto Inland Sea" loading="eager" />
+      <p class="photo-caption">One of six bridges on the Shimanami Kaido, connecting Oshima to Imabari across the Seto Inland Sea. Each bridge has a dedicated cycling lane running alongside the expressway.</p>
+    </div>
+
+    <p class="article-p">The plan was simple: take a bus from Fukuyama to Oshima, rent a bicycle, and ride the rest of the way to Imabari. What I did not expect was how the scale of the bridges would make me feel small in the best possible way.</p>
+
+    <p class="article-p">The Shimanami Kaido connects Honshu to Shikoku across a chain of islands in the Seto Inland Sea. Six bridges. Seventy kilometres. Each island is different — the light changes, the water changes colour, the bridges have different geometries. On a bicycle you feel all of it. In a car you just pass through.</p>
+
+    <div class="pull-quote"><p>"The sea was flat and blue. The bridges were absurdly large. The cycling was effortless. Japan does infrastructure the way it does everything else — completely."</p></div>
+
+    <p class="article-p">The route is well-signed, the cycling lanes are separated from traffic, and there are rental shops at every major point. It is one of those rare experiences that is genuinely as good as people say it is.</p>
+
+    <hr class="section-divider" />
+
+    <div class="section-label">II — The shrine older than Ise</div>
+
+    <div class="photo-block">
+      <img src="/images/shimanami/oyamazumi-tree.jpg" alt="3,000-year-old camphor tree at Oyamazumi Shrine, Omishima" loading="lazy" />
+      <p class="photo-caption">The 生樹の御門 (Iki no Mikoto) — a 3,000-year-old camphor tree at Oyamazumi Shrine on Omishima. The hollow trunk is wide enough to walk through. It is designated a Natural Monument by Ehime Prefecture.</p>
+    </div>
+
+    <p class="article-p">It was New Year's Day. The shrine at Omishima — Oyamazumi Jinja — was quiet in the way that very old places are quiet. Not empty. Not silent. Just settled.</p>
+
+    <p class="article-p">The camphor trees stopped me. Several of them, 3,000 years old, roots spreading across the ground like rivers. One of them — the 生樹の御門, the Living Tree Gate — has a hollow large enough to walk through. The sign says the interior reaches 31 metres deep. Standing at the entrance, looking into the dark, I believed it.</p>
+
+    <div class="history-box">
+      <p class="history-box-title">Oyamazumi Shrine — A Brief History</p>
+      <p>Oyamazumi Shrine is dedicated to Oyamazumi no Kami, the elder brother of Amaterasu — the sun goddess at the centre of Japanese mythology and the deity of Ise Jingu. In the hierarchy of Shinto, this makes Omishima's shrine something like the elder sibling of Japan's most famous sacred site.</p>
+      <p>The shrine's history reaches back approximately 2,600 years, predating written Japanese records. It was established by Ochi no Mikoto, a descendant of the deity, who crossed to Shikoku ahead of Emperor Jimmu's eastern campaign and designated this island — then called Omishima — as sacred ground.</p>
+      <p>Oyamazumi no Kami is simultaneously the god of mountains, the god of the sea, and the god of battle. This combination made the shrine a destination for warriors across Japanese history. The attached treasure hall holds the largest collection of ancient armour and weapons in Japan — approximately 80% of all national treasure-designated armour in the country was donated here by samurai clans including the Minamoto and Taira.</p>
+      <p>In the Meiji period it was designated one of the four great shrines of Japan. It is called 日本総鎮守 — the general guardian shrine of all Japan.</p>
+    </div>
+
+    <p class="article-p">None of this was visible from the outside. It looked like a forested hillside with an old gate. The kind of place you might walk past if you were in a hurry. On New Year's Day, nobody was in a hurry.</p>
+
+    <hr class="section-divider" />
+
+    <div class="section-label">III — The castle and the crossing</div>
+
+    <div class="photo-block">
+      <img src="/images/shimanami/imabari-castle.jpg" alt="Imabari Castle in Ehime Prefecture" loading="lazy" />
+      <p class="photo-caption">Imabari Castle. One of only three castles in Japan built directly at the sea's edge — originally, the moat was filled with seawater from the Seto Inland Sea.</p>
+    </div>
+
+    <p class="article-p">Imabari Castle sits at the edge of the city, understated from a distance and impressive up close. It is one of three castles in Japan where the moat was originally filled with seawater — a design that let ships enter directly from the sea. The stonework at the base is the honest kind: irregular, heavy, cut from whatever was quarried nearby.</p>
+
+    <p class="article-p">From Imabari the train to Matsuyama takes about thirty minutes on the Yosan Line, running along the coast of the Seto Inland Sea.</p>
+
+    <hr class="section-divider" />
+
+    <div class="section-label">IV — The station that stops time</div>
+
+    <div class="photo-block">
+      <img src="/images/shimanami/shimonada-station.jpg" alt="Shimonada Station at sunset, photographers lining the platform" loading="lazy" />
+      <p class="photo-caption">Shimonada Station, Yosan Line, at sunset on New Year's Day. Every person on that platform had a camera. Most of them were foreign.</p>
+    </div>
+
+    <p class="article-p">I was not expecting Shimonada Station. Nobody warned me. The train stopped, the doors opened, and I stepped onto a platform that sits directly at the edge of the Seto Inland Sea. The water was right there — close enough that if the light had been different, you might think the train was about to float.</p>
+
+    <p class="article-p">At that moment, on New Year's Day at sunset, the platform was full of photographers. Most of them were foreign. They had come specifically for this — the light, the sea, the small blue train pulling in against the horizon. It was one of those places that has been discovered by the internet and has not yet been ruined by it.</p>
+
+    <div class="pull-quote"><p>"A Japanese person standing on that platform looked at me sideways — surprised to find another Japanese person here, surrounded by foreign photographers who had flown across the world for this particular sunset."</p></div>
+
+    <hr class="section-divider" />
+
+    <div class="section-label">V — Matsuyama and Dogo</div>
+
+    <div class="photo-block">
+      <img src="/images/shimanami/dogo-shotengai.jpg" alt="Dogo Onsen shopping arcade in Matsuyama" loading="lazy" />
+      <p class="photo-caption">The covered shopping street leading to Dogo Onsen, Matsuyama. The famous bathhouse itself was under renovation — we found a smaller, local onsen nearby instead.</p>
+    </div>
+
+    <p class="article-p">Dogo Onsen was under renovation. The famous building — the one that reportedly inspired Miyazaki's bathhouse in Spirited Away — was wrapped in scaffolding. We found a smaller onsen nearby, local and quiet, with no English signage and no tour groups. It was better.</p>
+
+    <p class="article-p">The covered arcade around Dogo — Okaido and the surrounding streets — has a particular kind of Japanese town-centre energy that is hard to describe. Lived in. Not designed for tourism, not despite it. A Lawson next to a sake shop next to a sembei counter. The colours hanging from the ceiling were someone's idea of festivity, and it worked.</p>
+
+    <p class="article-p">Shikoku deserves more time than a day trip from the Shimanami Kaido. Next time, a car. A week. The 88 temple circuit starts somewhere nearby.</p>
+
+    <div class="cta-block">
+      <p>If you're drawn to Japan's landscapes and artistic traditions, visit <a href="https://www.etsy.com/shop/AnimArtJapan" target="_blank" rel="noopener">AnimArtJapan</a> — a small shop celebrating Japan through digital art prints.</p>
+    </div>
+
+    <div class="tag-row">
+      <span class="tag">Shimanami Kaido</span>
+      <span class="tag">Shikoku</span>
+      <span class="tag">Oyamazumi Shrine</span>
+      <span class="tag">Shimonada Station</span>
+      <span class="tag">Dogo Onsen</span>
+      <span class="tag">cycling Japan</span>
+      <span class="tag">off the beaten path</span>
+      <span class="tag">Seto Inland Sea</span>
+    </div>
+
+  </main>
+
+</body>
+</html>
