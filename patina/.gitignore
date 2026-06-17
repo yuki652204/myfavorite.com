@@ -1,0 +1,52 @@
+# oh-my-codex / oh-my-x
+.omc/
+.omx/
+
+# User customizations
+custom/
+.patina.yaml
+
+# OS / editor
+.DS_Store
+*.swp
+*~
+
+# Ops / runtime logs
+node_modules/
+.env
+
+# secrets / credentials
+.env.*
+*.key
+*.pem
+secrets/
+credentials/
+.aws/
+.ssh/
+
+# OpenClaw / Claude Code workspace files (runtime-specific, not part of the skill)
+.openclaw/
+.workclaw/
+.claude/
+AGENTS.md
+BOOTSTRAP.md
+CLAUDE.md
+IDENTITY.md
+USER.md
+MEMORY.md
+HEARTBEAT.md
+SOUL.md
+TOOLS.md
+memory/
+
+# Marketing bot workspace template (internal ops)
+
+# Generated benchmark artifacts (regenerated per `npm run benchmark`)
+tests/quality/results.json
+tests/e2e/temp-prompt.txt
+
+# Private rebaseline corpora; check in only sanitized manifests/summaries.
+artifacts/rebaseline-*/generations.private.jsonl
+artifacts/rebaseline-*/*.private.jsonl
+artifacts/rebaseline-*/private/
+.vercel

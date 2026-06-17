@@ -1,0 +1,9 @@
+# Keep raw/vendor/private rebaseline material local by default.
+*
+!.gitignore
+!README.md
+!*.example.jsonl
+!*.template.jsonl
+!sources.ko-public.jsonl
+!human-controls.public.jsonl
+!rebaseline-2026.scored.public.jsonl

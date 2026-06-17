@@ -1,0 +1,90 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Node 18.0.0
+        uses: actions/setup-node@v6
+        with:
+          node-version: "18.0.0"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: ESLint, typecheck, and codespell
+        run: npm run lint
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ["18.0.0", 20, 22, "lts/*"]
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        if: matrix.node-version != '18.0.0'
+        run: npm test
+
+      - name: Run minimum Node smoke
+        if: matrix.node-version == '18.0.0'
+        run: |
+          npm run lint:syntax
+          npm run benchmark
+
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Release metadata
+        run: npm run release:check
+
+      - name: Private asset leak gate
+        run: npm run check:no-private-assets
+
+      - name: Syntax lint
+        run: npm run lint:syntax
+
+      - name: Benchmark report schema
+        run: npm run benchmark:report
+
+      - name: Detector comparison harness
+        run: npm run benchmark:compare
+
+      - name: Dogfood public docs
+        run: npm run dogfood
+

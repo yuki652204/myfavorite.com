@@ -1,0 +1,212 @@
+<p align="center">
+  <img src="assets/brand/patina-mark.svg" alt="patina mark" width="172">
+</p>
+
+<h1 align="center">patina</h1>
+
+<p align="center">
+  <strong>Strip the AI packaging. Keep the meaning.</strong>
+</p>
+
+<p align="center">
+  <a href="README_KR.md"><b>한국어</b></a> ·
+  <a href="README_ZH.md"><b>中文</b></a> ·
+  <a href="README_JA.md"><b>日本語</b></a> ·
+  <b>English</b>
+</p>
+
+<p align="center">
+  <a href="https://github.com/devswha/patina/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/devswha/patina/actions/workflows/test.yml/badge.svg"></a>
+  <a href="https://opensource.org/licenses/MIT"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
+  <a href="#quick-start"><img alt="Skill: Claude Code | Codex | Cursor | OpenCode" src="https://img.shields.io/badge/Skill-Claude%20Code%20%7C%20Codex%20%7C%20Cursor%20%7C%20OpenCode-blueviolet"></a>
+  <a href="https://github.com/devswha/patina"><img alt="Languages: KO | EN | ZH | JA" src="https://img.shields.io/badge/Languages-KO%20%7C%20EN%20%7C%20ZH%20%7C%20JA-green"></a>
+  <a href="CHANGELOG.md"><img alt="Version 4.0.0" src="https://img.shields.io/badge/version-4.0.0-blue"></a>
+</p>
+
+<p align="center">
+  <a href="https://patina.vibetip.help/"><b>Try the browser audit — no install</b></a>
+</p>
+
+patina is a deterministic, pattern-based humanizer for Korean, English, Chinese, and Japanese. It finds AI-sounding phrasing and rewrites it without changing the claim, numbers, polarity, or causation.
+
+It is not a black-box paraphraser, authorship detector, or detector-bypass tool. patina is built for allowed AI-assisted drafting where the author wants cleaner voice, an audit trail, and meaning-preservation checks.
+
+## Demo
+
+**Before** *(AI-sounding; same fixture used by the GIF)*:
+> The newly released Notion template pack is an **innovative solution** designed to **transform productivity** for modern teams. It offers 30 templates optimized for diverse workflows, with a user-friendly design that enables anyone to leverage them effortlessly. This product introduces a **new paradigm** for maximizing work efficiency.
+
+**After** *(`/patina --lang en --tone marketing` — same claims, AI packaging removed)*:
+> If Notion still starts as a blank page for your team, open this pack first. It includes 30 templates for common workflows. Duplicate one, adjust the fields you need, and use it for a team project or your own planning without starting from scratch.
+
+> **Score = 0.0%** · 30 templates ✓ · workflow fit ✓ · copy-and-edit use ✓
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/devswha/patina/main/assets/demo/patina-demo-en.gif" alt="Animated terminal demo showing patina rewriting English AI-sounding copy and scoring the cleaned result" width="780">
+</p>
+
+More examples: [Before/After Gallery](docs/EXAMPLES.md) ([한국어](docs/EXAMPLES_KR.md)) · [30-second terminal demo](docs/DEMO.md).
+
+## Quick Start
+
+### Browser audit
+
+Open **[patina.vibetip.help](https://patina.vibetip.help/)** to score KO / EN / ZH / JA text in your browser. The playground is audit-only: it does not rewrite text, call external LLMs, or send API keys to a server.
+
+### Agent skill
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/devswha/patina/main/install.sh | bash
+```
+
+Then run the skill from Claude Code, Codex CLI, Cursor, or OpenCode:
+
+```text
+/patina --lang en
+
+[paste your text here]
+```
+
+Useful skill calls:
+
+```text
+/patina --tone narrative
+/patina --tone auto --lang en
+```
+
+### Standalone CLI
+
+Requires Node.js >= 18.
+
+```bash
+npx patina-cli doctor
+npx patina-cli --lang en input.txt
+```
+
+Use a logged-in local model CLI without an API key:
+
+```bash
+printf '%s\n' 'Coffee has emerged as a pivotal cultural phenomenon.' \
+  | npx patina-cli --lang en --backend codex-cli
+```
+
+Supported local backends: `codex-cli`, `claude-cli`, `gemini-cli`, `kimi-cli`.
+Without `--model`, patina passes the strongest documented default per backend:
+`gpt-5.5` for OpenAI/Codex, `claude-sonnet-4-6` for Claude, `gemini-2.5-pro`
+for Gemini, and `kimi-code/kimi-for-coding` for Kimi Code. See
+[Authentication](docs/AUTHENTICATION.md) ([한국어](docs/AUTHENTICATION_KR.md)).
+
+For large `--batch` rewrites, prefer an OpenAI-compatible HTTP backend. Local
+CLI backends are agent runtimes; patina caps them conservatively, uses compact
+prompts for them, and exposes `--timeout-ms`, `--max-concurrency`,
+`--max-retries`, `--max-failures`, and `--max-failure-rate` for batch safety.
+
+## What You Get
+
+|  |  |
+|---|---|
+| **168 patterns** | 33 rewrite-capable + 9 score-only viral-hook per language (42 each across KO/EN/ZH/JA) — see the full 168-pattern catalog in [PATTERNS.md](docs/PATTERNS.md) |
+| **Modes** | rewrite · audit · score · diff · ouroboros |
+| **Surfaces** | agent skill · Node CLI · browser audit playground |
+| **Free usage** | logged-in `codex`, `claude`, or `gemini` CLI can run rewrites without `PATINA_API_KEY` |
+| **Calibration** | 67.3% editing-hotspot catch [63.5–71.0%] across GPT-5.5 / Claude Sonnet 4.6 / Gemini 2.5 Pro (n=600, KO+EN); 16.0% false positives [11.6–21.7%] on KO+EN human controls (n=200) |
+| **License** | MIT |
+
+Scores are editing signals with false positives and false negatives, not proof of authorship. See [Ethics](docs/ETHICS.md).
+
+## Common Commands
+
+```bash
+patina --lang <ko|en|zh|ja> [mode] [--profile <name>] input.txt
+```
+
+| Command | Purpose |
+|---|---|
+| `patina input.txt` | rewrite with defaults |
+| `patina --audit input.txt` | detect patterns only |
+| `patina --score input.txt` | output a 0-100 AI-likeness score |
+| `patina --score --exit-on 30 input.txt` | CI gate with exit code `3` when `overall > 30` |
+| `patina --diff input.txt` | show pattern-by-pattern changes |
+| `patina --ouroboros input.txt` | iterate with MPS/fidelity rollback |
+| `patina --tone auto --lang en input.txt` | infer and apply a KO/EN tone axis |
+| `patina --format json --quiet input.txt` | script-friendly output |
+| `patina --batch docs/*.md --outdir cleaned/` | batch file processing |
+
+`patina --help` prints the full flag list. `patina doctor --json` checks Node, backend, tmux, and API-key readiness without making an LLM call.
+
+## CI
+
+For GitHub Actions, the maintained wrapper is shorter than hand-rolled setup:
+
+```yaml
+name: Patina prose score
+on:
+  pull_request:
+    paths: ['**/*.md', '**/*.mdx']
+permissions:
+  contents: read
+  pull-requests: read
+  issues: write
+jobs:
+  patina:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: devswha/patina-action@v1
+        with:
+          score-threshold: 30
+          lang: auto
+          comment: true
+```
+
+Other integrations: [pre-commit](docs/integrations/pre-commit.md), [static sites](docs/integrations/static-sites.md), [Docker](docs/integrations/docker.md), [release workflow](docs/integrations/release.md).
+
+## How It Works
+
+```text
+Input
+  -> semantic anchor extraction (claims, polarity, causation, numbers)
+  -> stylometry + AI-lexicon scan
+  -> pattern-guided rewrite
+  -> self-audit and MPS/fidelity checks
+  -> cleaned text
+```
+
+If meaning drifts, the change is retried or rolled back. Deterministic analysis lives in `src/features/*`; LLM-backed rewrite and score calls use the selected backend.
+
+## Configuration
+
+```yaml
+# .patina.default.yaml
+version: "4.0.0"
+language: ko              # ko | en | zh | ja
+profile: default
+output: rewrite           # rewrite | diff | audit | score
+tone:                     # casual | professional | academic | narrative | marketing | instructional | auto
+```
+
+Project `.patina.yaml` overrides defaults. Pattern packs are auto-discovered by language prefix. Additive list keys (`blocklist`, `allowlist`, `skip-patterns`) merge; other arrays replace.
+
+## Documentation
+
+Start here:
+
+- [Cookbook](docs/COOKBOOK.md) — common recipes and workflows
+- [CLI Contract](docs/CLI.md) — flags, formats, score gates, exit behavior
+- [Authentication](docs/AUTHENTICATION.md) — local CLI backends and API providers
+- [Patterns](docs/PATTERNS.md) — full pattern catalog
+- [Benchmarks](docs/benchmarks/README.md) · [latest report](docs/benchmarks/latest.md) · [2026 rebaseline](docs/research/2026-rebaseline.md)
+- [FAQ](docs/FAQ.md) ([한국어](docs/FAQ_KR.md))
+- [Ethics](docs/ETHICS.md)
+- [Contributing](CONTRIBUTING.md) ([한국어](CONTRIBUTING_KR.md))
+- [Changelog](CHANGELOG.md)
+
+Brand assets and usage rules live in [Branding](docs/BRANDING.md). Design notes live in [DESIGN.md](DESIGN.md).
+
+## Acknowledgements
+
+Inspired by [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)'s plugin architecture, [Wikipedia's "Signs of AI writing"](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing), and [blader/humanizer](https://github.com/blader/humanizer).
+
+## License
+
+MIT. See [LICENSE](LICENSE) and [NOTICE](NOTICE).

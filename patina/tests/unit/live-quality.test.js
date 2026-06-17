@@ -1,0 +1,181 @@
+import { test } from 'node:test';
+import { strict as assert } from 'node:assert';
+
+import {
+  classifyQuality,
+  computeMeaningSafety,
+  deliveredRewrite,
+  evaluateModelGradedRewrite,
+  evaluateRewriteQuality,
+  loadLiveFixtures,
+  renderMarkdownReport,
+  resolveLiveSettings,
+  runLiveQuality,
+  runLiveQualityReport,
+} from '../quality/live-quality.mjs';
+
+const fixture = {
+  fixture_id: 'en-unit-live-01',
+  language: 'en',
+  register: 'unit',
+  source_type: 'synthetic-ai',
+  model_family: 'fixture',
+  prompt_id: 'unit',
+  redistribution: 'repo-ok',
+  anchors: ['coffee', 'Paris', 'Tokyo'],
+  facts: ['coffee', 'Paris', 'Tokyo'],
+  text: [
+    'Coffee is a pivotal cultural phenomenon. Coffee is a pivotal cultural phenomenon. Coffee is a pivotal cultural phenomenon.',
+    'Paris and Tokyo both have coffee scenes that are important to local routines.',
+  ].join('\n\n'),
+};
+
+const rewrite = `[BODY]
+Coffee still matters in Paris and Tokyo, but not in some grand, world-historical way.
+People meet over it, argue over it, and build small routines around it.
+[/BODY]
+[SELF_AUDIT]
+Removed inflated claims.
+[/SELF_AUDIT]`;
+
+test('live fixtures load YAML frontmatter metadata for the deliberate runner', () => {
+  const fixtures = loadLiveFixtures();
+  assert.ok(fixtures.length >= 2);
+  assert.ok(fixtures.some((item) => item.language === 'en'));
+  assert.ok(fixtures.some((item) => item.language === 'ko'));
+  for (const item of fixtures) {
+    assert.equal(item.redistribution, 'repo-ok');
+    assert.ok(Array.isArray(item.anchors));
+    assert.ok(item.anchors.length > 0);
+    assert.ok(item.text.length > 0);
+  }
+});
+
+test('evaluateRewriteQuality exposes before/after safe-gain fields', () => {
+  const result = evaluateRewriteQuality(fixture, rewrite);
+
+  assert.equal(result.fixture_id, fixture.fixture_id);
+  assert.equal(typeof result.before_score, 'number');
+  assert.equal(typeof result.after_score, 'number');
+  assert.equal(typeof result.humanization_gain, 'number');
+  assert.equal(typeof result.meaning_safety, 'number');
+  assert.equal(typeof result.safe_gain, 'number');
+  assert.ok(['pass', 'warn', 'fail'].includes(result.status));
+  assert.equal(result.preserved_facts.length, 3);
+});
+
+test('deliveredRewrite strips self-audit blocks before scoring', () => {
+  const delivered = deliveredRewrite(rewrite);
+  assert.match(delivered, /Coffee still matters/);
+  assert.doesNotMatch(delivered, /SELF_AUDIT/);
+  assert.doesNotMatch(delivered, /Removed inflated claims/);
+});
+
+test('meaning safety uses fact preservation and length sanity as a deterministic proxy', () => {
+  assert.equal(computeMeaningSafety(fixture, fixture.text), 100);
+  assert.ok(computeMeaningSafety(fixture, 'coffee only') < 70);
+});
+
+test('classification separates pass, warn, and fail', () => {
+  assert.equal(classifyQuality({ afterScore: 20, meaningSafety: 90, safeGain: 10 }), 'pass');
+  assert.equal(classifyQuality({ afterScore: 40, meaningSafety: 90, safeGain: 10 }), 'warn');
+  assert.equal(classifyQuality({ afterScore: 20, meaningSafety: 50, safeGain: 10 }), 'fail');
+});
+
+test('default run skips live calls without failing', async () => {
+  const results = await runLiveQuality({ fixtures: [fixture], dryRun: true });
+  assert.equal(results.length, 1);
+  assert.equal(results[0].status, 'skipped');
+  assert.equal(typeof results[0].before_score, 'number');
+
+  const report = renderMarkdownReport(results);
+  assert.match(report, /Patina live rewrite quality/);
+  assert.match(report, /skipped/);
+});
+
+test('live settings redact keys and prefer PATINA_LIVE env', () => {
+  const settings = resolveLiveSettings({
+    env: {
+      PATINA_LIVE_PROVIDER: 'gemini',
+      PATINA_LIVE_API_KEY: 'secret-live-key',
+      PATINA_LIVE_MODEL: 'gemini-test-model',
+      PATINA_LIVE_API_BASE: 'https://example.test/v1',
+      PATINA_LIVE_TIMEOUT_MS: '12345',
+    },
+  });
+
+  assert.equal(settings.provider, 'gemini');
+  assert.equal(settings.hasApiKey, true);
+  assert.equal(settings.apiKey, 'secret-live-key');
+  assert.equal(settings.apiKeySource, 'env:PATINA_LIVE_API_KEY');
+  assert.equal(settings.model, 'gemini-test-model');
+  assert.equal(settings.baseURL, 'https://example.test/v1');
+  assert.equal(settings.timeoutMs, 12345);
+});
+
+test('model-graded evaluation uses scoring floors and reports pass', async () => {
+  const result = await evaluateModelGradedRewrite(fixture, rewrite, {
+    settings: {
+      apiKey: 'test-key',
+      baseURL: 'https://example.test/v1',
+      model: 'test-model',
+      timeoutMs: 1000,
+    },
+    callLLM: fakeQualityModel,
+  });
+
+  assert.equal(result.status, 'pass');
+  assert.equal(result.mode, 'live-api');
+  assert.equal(result.after_score, 20);
+  assert.equal(result.mps, 95);
+  assert.equal(result.fidelity, 91.7);
+  assert.deepEqual(result.policy_violations, []);
+});
+
+test('live report is structured and fail-closed when credentials are missing', async () => {
+  const report = await runLiveQualityReport({ fixtures: [fixture], live: true, env: {} });
+
+  assert.equal(report.schema_version, 1);
+  assert.equal(report.settings.hasApiKey, false);
+  assert.equal(report.summary.error, 1);
+  assert.equal(report.results[0].status, 'error');
+  assert.match(report.results[0].errors[0], /no API key/);
+
+  const markdown = renderMarkdownReport(report);
+  assert.match(markdown, /schema_version: 1/);
+  assert.match(markdown, /api_key: missing/);
+});
+
+async function fakeQualityModel({ prompt }) {
+  if (prompt.includes('AI-likeness scoring engine')) {
+    const isRewrite = prompt.includes('Coffee still matters');
+    return JSON.stringify({
+      categories: {},
+      overall: isRewrite ? 20 : 70,
+      interpretation: isRewrite ? 'mostly human' : 'AI-like',
+    });
+  }
+  if (prompt.includes('Meaning Preservation evaluator')) {
+    return JSON.stringify({
+      anchors: [
+        { type: 'claim', content: 'coffee', verdict: 'PASS' },
+        { type: 'claim', content: 'Paris', verdict: 'PASS' },
+        { type: 'claim', content: 'Tokyo', verdict: 'PASS' },
+      ],
+      pass_count: 3,
+      total_count: 3,
+      polarity_pass_count: 1,
+      polarity_total_count: 1,
+      mps: 95,
+    });
+  }
+  if (prompt.includes('Fidelity evaluator')) {
+    return JSON.stringify({
+      claims_preserved: 3,
+      no_fabrication: 3,
+      tone_match: 2,
+      rationale: 'Claims and tone are mostly preserved.',
+    });
+  }
+  return rewrite;
+}
