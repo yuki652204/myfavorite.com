@@ -2,7 +2,7 @@
 title: "LINEにレシートを送るだけで経費管理できるBotを Claude APIで作った"
 description: "家計簿をつける場合現金払いがまざると面倒だった。Claude APIとLINE Messaging APIを組み合わせて、レシートを撮って送るだけで経費が自動登録されるBotを作った話。"
 pubDate: "2026-06-08"
-heroImage: ""
+heroImage: "/images/line-keihi-bot/Screenshot_20260617-185255.png"
 ---
 
 # LINEにレシートを送るだけで経費管理できるBotを Claude APIで作った
