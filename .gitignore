@@ -25,3 +25,4 @@ pnpm-debug.log*
 public/images/backwpup
 public/images/backwpup-restore
 .claude/settings.local.json
+.vercel
