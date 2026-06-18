@@ -1,0 +1,369 @@
+---
+// src/pages/bamboo-mutsume-ami.astro
+const title = "六つ目編みに目を奪われた話 | The Hexagons That Stopped Me at a Bamboo Market";
+const description = "市場の毛布に並んだ竹細工の六つ目編みに足を止めた話。組子にも通じる日本の精密な手仕事。Native Japanese 第3回。";
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" /><link rel="icon" href="/favicon.ico" /><link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1a1814;
+      --ink-light: #4a4540;
+      --ink-muted: #8a8278;
+      --paper: #f7f4ef;
+      --paper-warm: #ede9e2;
+      --accent: #8b6914;
+      --accent-light: #c4a44a;
+      --border: rgba(26,24,20,0.12);
+      --serif-ja: 'Noto Serif JP', serif;
+      --serif-en: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Noto Sans JP', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--serif-ja);
+      font-size: 16px;
+      line-height: 2;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* HEADER */
+    .site-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .site-logo { font-family: var(--serif-en); font-size: 20px; font-weight: 400; color: var(--ink); text-decoration: none; letter-spacing: 0.04em; }
+    .lang-toggle { display: flex; gap: 0; border: 0.5px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .lang-toggle button { background: transparent; border: none; padding: 6px 14px; font-family: var(--sans); font-size: 12px; cursor: pointer; color: var(--ink-muted); transition: background 0.2s, color 0.2s; }
+    .lang-toggle button.active { background: var(--ink); color: var(--paper); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: clamp(300px, 50vw, 520px);
+      overflow: hidden;
+    }
+    .hero img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, rgba(26,24,20,0.55) 100%); }
+    .hero-title-block {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 3;
+      width: 90%;
+    }
+    .hero-series { font-family: var(--sans); font-size: 11px; letter-spacing: 0.14em; color: rgba(247,244,239,0.7); text-transform: uppercase; margin-bottom: 0.5rem; }
+    .hero-h1-ja { font-family: var(--serif-ja); font-size: clamp(20px, 3.5vw, 32px); font-weight: 500; color: #f7f4ef; line-height: 1.5; margin-bottom: 0.25rem; }
+    .hero-h1-en { font-family: var(--serif-en); font-size: clamp(13px, 2vw, 18px); font-style: italic; color: rgba(247,244,239,0.75); }
+
+    /* ARTICLE */
+    .article-container { max-width: 720px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+    .lang-ja, .lang-en { display: block; }
+    .lang-ja.hidden, .lang-en.hidden { display: none; }
+
+    /* TYPOGRAPHY */
+    .article-lead { font-size: 15px; color: var(--ink-muted); border-left: 2px solid var(--accent-light); padding-left: 1.25rem; margin-bottom: 3rem; line-height: 2; border-radius: 0; }
+    .section-label { font-family: var(--sans); font-size: 11px; letter-spacing: 0.12em; color: var(--accent); margin: 3rem 0 1rem; display: flex; align-items: center; gap: 10px; }
+    .section-label::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
+    .article-p { font-size: 16px; line-height: 2.1; color: var(--ink); margin-bottom: 1.5rem; }
+    .article-p-en { font-family: var(--serif-en); font-size: 17px; line-height: 1.9; color: var(--ink); margin-bottom: 1.5rem; }
+    .pull-quote { margin: 2rem 0; padding: 1rem 1.5rem; border-left: 2px solid var(--accent); border-radius: 0; }
+    .pull-quote p { font-size: 17px; color: var(--ink-light); line-height: 2; }
+    .pull-quote-en p { font-family: var(--serif-en); font-size: 19px; font-style: italic; }
+
+    /* PHOTO */
+    .photo-block { margin: 2rem -1rem; }
+    .photo-block img { width: 100%; display: block; border-radius: 4px; }
+    .photo-caption { font-family: var(--sans); font-size: 12px; color: var(--ink-muted); padding: 0.6rem 1rem 0; line-height: 1.7; border-top: 0.5px solid var(--border); margin-top: 0.5rem; }
+
+    /* COMPARE */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; }
+    .compare-card { background: var(--paper-warm); border: 0.5px solid var(--border); border-radius: 6px; padding: 1.25rem; }
+    .compare-card-title { font-family: var(--sans); font-size: 12px; font-weight: 500; color: var(--accent); margin-bottom: 0.5rem; }
+    .compare-card-body { font-family: var(--sans); font-size: 13px; color: var(--ink-light); line-height: 1.9; }
+
+    /* CTA */
+    .cta-block { margin: 3rem 0 0; padding: 1.5rem; background: var(--paper-warm); border: 0.5px solid var(--border); border-radius: 6px; }
+    .cta-block p { font-family: var(--sans); font-size: 14px; color: var(--ink-light); line-height: 1.8; margin: 0; }
+    .cta-block a { color: var(--accent); text-decoration: none; border-bottom: 0.5px solid var(--accent-light); padding-bottom: 1px; }
+
+    /* TAGS */
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2.5rem; }
+    .tag { font-family: var(--sans); font-size: 11px; color: var(--ink-muted); border: 0.5px solid var(--border); border-radius: 3px; padding: 3px 10px; }
+
+    .section-divider { border: none; border-top: 0.5px solid var(--border); margin: 2.5rem 0; }
+
+    @media (max-width: 600px) {
+      .hero { height: 260px; }
+      .compare-grid { grid-template-columns: 1fr; }
+      .article-container { padding: 2rem 1.25rem 4rem; }
+      .photo-block { margin: 1.5rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="site-logo">myfavorite</a>
+    <div class="lang-toggle">
+      <button class="active" id="btn-ja" onclick="setLang('ja')">日本語</button>
+      <button id="btn-en" onclick="setLang('en')">English</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <img src="/images/native-japanese/bamboo-market-blanket-overview.jpg" alt="市場の毛布に並んだ竹細工" loading="eager" />
+    <div class="hero-overlay"></div>
+    <div class="hero-title-block">
+      <p class="hero-series">Native Japanese — No. 3</p>
+      <h1 class="hero-h1-ja">六つ目編みに目を奪われた話</h1>
+      <p class="hero-h1-en">The Hexagons That Stopped Me at a Bamboo Market</p>
+    </div>
+  </div>
+
+  <main class="article-container">
+
+    <!-- 日本語 -->
+   <section class="lang-ja" id="section-ja">
+      <p class="article-lead">市場の毛布の上で目を奪われた竹細工。これはただの記録です。</p>
+
+      <div class="section-label">すべてはここから始まる</div>
+
+      <p class="article-p">その日、竹細工を探していたわけではなかった。市場の屋台を歩いていたら、地面に敷かれたタータンの毛布が目に入って、足が止まった。何十枚もの編まれた円盤、箱、小さな柄杓が並んでいて、それぞれに増殖していくような模様が編み込まれていた。</p>
+      <p class="article-p">しゃがみこんで、しばらく見つめていた。</p>
+
+      <div class="pull-quote"><p>同じ素材。同じ基本構造。それでも生まれる結果はまるで違う。</p></div>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/bamboo-market-blanket-overview.jpg" alt="市場の毛布に並んだ竹細工の数々" loading="lazy" />
+        <p class="photo-caption">市場の屋台、タータンの毛布の上に並んだ竹細工。円形のトレイ、箱、柄杓——どれも六つ目編みを基礎にした模様で編まれている。</p>
+      </div>
+
+      <p class="article-p">最初に目を引いたのは、直径30センチほどのトレイだった。小さな六芒星が隙間なく編み込まれていて、ひとつひとつの星が六角形の中に収まり、その六角形が次々と繋がっていく。まるで作られたのではなく、育ったように見えた。</p>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/bamboo-star-pattern-tray.jpg" alt="六角形の星模様が密に編まれた竹のトレイ" loading="lazy" />
+        <p class="photo-caption">円形の竹トレイ。六角形の中に六芒星が編み込まれた、密度の高い模様。</p>
+      </div>
+
+      <p class="article-p">その隣には小さな柄杓が置かれていて、模様は全く違った。濃淡の竹ひごが交差して、千鳥格子に近い模様を作っていた。</p>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/bamboo-ladles-and-tray.jpg" alt="異なる模様で編まれた2本の竹の柄杓と円形トレイ" loading="lazy" />
+        <p class="photo-caption">柄の異なる2本の柄杓と、円形トレイ。同じ六つ目編みの構造から、まったく違う表情が生まれている。</p>
+      </div>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">六つ目編みとは何か</div>
+
+      <p class="article-p">この模様の土台になっているのが「六つ目編み」と呼ばれる技法だ。竹細工の中でも最も基本的で、最も古い編み方のひとつ。考え方はシンプルで、ナプキンにでも描けるくらいだ。普通の格子編みのように2方向だけで竹ひごを編むのではなく、そこに3方向目を加える。2本ではなく3本の竹ひごが交差することで、その間に六角形の隙間が生まれる。この「3方向目」がすべての鍵で、それが平らな格子を奥行きとリズムのあるものに変える。</p>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/bamboo-weave-in-progress.jpg" alt="まだ縁を仕上げる前の、編み進められている竹の六つ目編み" loading="lazy" />
+        <p class="photo-caption">編み進められている途中の竹細工。縁を整える前の、六角形の構造がまだ生のまま見えている状態。</p>
+      </div>
+
+      <p class="article-p">歴史も長い。日本の職人たちは地域ごとに様々な竹編みの技法を育ててきて、わずかな基本パターンから何百もの組み合わせが生まれた。別府だけでも、8つの基本編みから200種類以上のバリエーションが記録されている。六つ目編みはひとつの固定された模様ではなく、文法のようなものだ。世代を超えた職人たちが、その文法を使ってより複雑な作品を編み続けてきた。</p>
+      <p class="article-p">実用的な編み方でもある。野菜や小動物を運ぶかごによく使われるのは、開いた六角形の隙間が軽さと強度を両立させてくれるからだ。けれど、その市場の屋台で見ていたものは、明らかに「実用かご」の領域を超えていた。レース細工に近い何かになっていた。</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">菊模様への発展</div>
+
+      <p class="article-p">あの六芒星のトレイは、六つ目編みが熟練した手に渡ったときにどこへ向かうかを示す好例だ。この基礎の上に作られたバリエーションの一群があって、六角形の隙間を花のような円形模様に並べたものは、地域や職人によって「華六つ目」や「菊模様」と呼ばれる。</p>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/bamboo-chrysanthemum-box.jpg" alt="菊模様の密な六つ目編みで覆われた竹の箱の蓋" loading="lazy" />
+        <p class="photo-caption">箱の蓋全体を覆う、菊模様の密な六つ目編み。ひとつひとつの六角形の中に、さらに小さな星模様が編み込まれている。</p>
+      </div>
+
+      <p class="article-p">後で「【菊模様】華六つ目菊模様の作り方【竹細工】」という動画を見つけて、市場では見えなかった部分が腑に落ちた。ひとつの菊模様を、周りの格子の中にきれいに収めるために必要な、竹ひごの交差の数の多さだ。数メートル離れて見れば一つの繰り返し模様に見えるものが、実際には何十もの細かい判断の積み重ねでできている。一本一本の竹ひごを、隣の六角形を歪めない程度のちょうどいい張りで止めていく。</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">組子と並ぶもう一つの精密さ</div>
+
+      <p class="article-p">日本の木工に少しでも触れたことがあれば、釘を一本も使わずに細い木の桟で幾何学模様を組み上げる「組子」を見たことがあるはずだ。組子は、日本の精密な手仕事を象徴するものとして、海外でもよく知られている。</p>
+      <p class="article-p">あの竹のトレイの前に立って気づいたのは、六つ目編みも素材が違うだけで、まったく同じ欲求を満たしているということだった。繰り返す幾何学模様への執着、何十本もの細い竹ひごを完璧に揃えるための忍耐、手だけでここまで精密にできるという静かな自信。組子が注目を集める一方で、竹編みも同じくらい長く、同じことをやり続けてきた。</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">今も手で編まれている</div>
+
+      <p class="article-p">市場で撮った一枚の写真に、職人の手が動いている瞬間が偶然写っていた。一本の竹ひごを指先でつまみ、すでに何十本も交差している作業場の中に、そっと収めていく。小さな一場面だけれど、自分にとっては重要だった。あの毛布の上にあったすべてが、こういう手から生まれたものだったから。</p>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/bamboo-hand-weaving-01.jpg" alt="菊模様の編み込みに竹ひごを通す職人の手" loading="lazy" />
+        <p class="photo-caption">編み込みの最中、菊模様の中に竹ひごを通していく職人の手。</p>
+      </div>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/bamboo-hand-weaving-02.jpg" alt="完成した模様の上で六つ目編みを進める2つの手のクローズアップ" loading="lazy" />
+        <p class="photo-caption">六つ目編みを進める2つの手。中央には既に完成した模様が見えている。</p>
+      </div>
+
+      <p class="article-p">今、この伝統を引き継いでいるのは、ほんの一握りの若い職人たちだけだという。技術を身につけるのにも何年もかかる。竹ひごを最初から最後まで均一な厚さに整えること——かご職人になるための最初の一歩——だけで、3年かかると言われている。あの毛布の上にあったトレイも、柄杓も、箱も、そのひとつひとつが何千時間もの積み重ねられた手仕事の結晶だった。何を見ているかを知っていなければ、その大半は目に見えないままだ。</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">なぜ今も考え続けているのか</div>
+
+      <p class="article-p">その日、何も買わなかった。今は少し後悔している。代わりに持ち帰ったのは写真と、ひとつの問いが残る感覚だった。3本の竹ひごが交差して1つの六角形を作る、たったそれだけの繰り返し単位が、編む手の意図次第で菊模様にも、星にも、千鳥格子にもなっていく。</p>
+      <p class="article-p">「伝統工芸」は、博物館に固定された展示物ではないのだと、改めて気づかされた。今も語られ続けている文法であり、竹ひごを同じ厚さで二度切れるようになるまでに3年をかける人たちによって、今も拡張され続けている。</p>
+      <p class="article-p">そしてもうひとつ気づいたことがある。日本にはまだ、こんな素敵な道具が日常の中にひっそりと存在している。ガラスケースの中ではなく、ただの市場の屋台に敷かれた毛布の上に置かれて、誰かがしゃがみこんで気づいてくれるのを待っている。</p>
+
+      <div class="cta-block">
+        <p>日本の工芸や素材文化に興味があれば、<a href="https://www.etsy.com/shop/AnimArtJapan" target="_blank" rel="noopener">AnimArtJapan</a> をのぞいてみてください。日本の美意識をテーマにしたデジタルアートプリントを販売しています。</p>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">Native Japanese</span>
+        <span class="tag">竹細工</span>
+        <span class="tag">六つ目編み</span>
+        <span class="tag">組子</span>
+        <span class="tag">伝統工芸</span>
+        <span class="tag">職人</span>
+      </div>
+    </section>
+
+    
+
+<!-- English -->
+    <section class="lang-en hidden" id="section-en">
+      <p class="article-lead" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 17px;">A look at mutsume-ami, the traditional Japanese hexagonal bamboo weave, encountered by accident at a market stall.</p>
+
+      <div class="section-label">Where it begins</div>
+
+      <p class="article-p-en">I wasn't looking for bamboo that day. I was just walking past a market stall, and then a tartan blanket spread out on the ground stopped me cold. Dozens of woven discs, boxes, and tiny ladles were laid out in rows, each one covered in a pattern that seemed to multiply on itself.</p>
+      <p class="article-p-en">I crouched down and stared for a while.</p>
+
+      <div class="pull-quote pull-quote-en"><p>Same material. Same basic logic. Wildly different results.</p></div>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/bamboo-market-blanket-overview.jpg" alt="Bamboo crafts laid out on a tartan blanket at a market stall" loading="lazy" />
+        <p class="photo-caption">A market stall, bamboo trays, boxes, and ladles laid out on a tartan blanket — all built on variations of the hexagonal mutsume-ami weave.</p>
+      </div>
+
+      <p class="article-p-en">What caught my eye first was a tray, maybe thirty centimeters across, packed edge to edge with tiny six-pointed stars. Each star sat inside a hexagon, and each hexagon connected into the next, like the whole thing had grown rather than been made.</p>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/bamboo-star-pattern-tray.jpg" alt="A round bamboo tray covered in a dense hexagonal star pattern" loading="lazy" />
+        <p class="photo-caption">A round bamboo tray covered in a dense hexagonal star pattern.</p>
+      </div>
+
+      <p class="article-p-en">Next to it sat a small ladle with a completely different motif woven into its bowl, dark and light strips crossing into something closer to a houndstooth check.</p>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/bamboo-ladles-and-tray.jpg" alt="Two small bamboo ladles with different woven patterns next to a round tray" loading="lazy" />
+        <p class="photo-caption">Two small bamboo ladles with different woven patterns next to a round tray.</p>
+      </div>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">What mutsume-ami actually is</div>
+
+      <p class="article-p-en">The base of all of this is called mutsume-ami (六つ目編み), literally "six-eyed weave." It's one of bamboo weaving's oldest and most fundamental techniques, and the idea is simple enough to sketch on a napkin: instead of weaving strips in just two directions like a basic checkerboard, you add a third direction. Three bamboo strips cross instead of two, leaving hexagonal openings between them. That third direction is the whole trick.</p>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/bamboo-weave-in-progress.jpg" alt="A bamboo weave still in progress, before the edges are trimmed and finished" loading="lazy" />
+        <p class="photo-caption">A bamboo weave still in progress, showing the hexagonal structure before the edges are trimmed and finished.</p>
+      </div>
+
+      <p class="article-p-en">It's old, too. Japanese craftspeople have developed bamboo plaiting techniques across different regions over a long history, and from a handful of standard patterns, hundreds of combinations have emerged. In Beppu alone, eight basic weaves combine into more than two hundred documented variations. Mutsume-ami isn't a single fixed pattern so much as a grammar, a base structure generations of weavers have used to build increasingly elaborate work.</p>
+      <p class="article-p-en">It's a practical weave too, commonly used for baskets that carry vegetables or small animals, precisely because the open hexagons keep things light without sacrificing strength. But standing at that market stall, practicality wasn't really what was on display. What I was looking at had clearly moved past "useful basket" territory and into something closer to lacework.</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">From hexagons to chrysanthemums</div>
+
+      <p class="article-p-en">That tray with the six-pointed stars is a good example of where mutsume-ami goes once a skilled hand picks it up. There's a whole branch of variations built on exactly this base, including ones that arrange the hexagonal openings into flower-like medallions, sometimes called hana-mutsume or kiku (chrysanthemum) patterns depending on the region and the weaver.</p>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/bamboo-chrysanthemum-box.jpg" alt="A bamboo box lid covered entirely in a dense chrysanthemum-style hexagonal weave" loading="lazy" />
+        <p class="photo-caption">A bamboo box lid covered entirely in a dense chrysanthemum-style hexagonal weave.</p>
+      </div>
+
+      <p class="article-p-en">I later found a video tutorial titled "How to Weave the Flower Hexagonal Chrysanthemum Pattern in Bamboo Craft," and watching it filled in something the market stall couldn't show me: the sheer number of individual strip crossings required to make one of those medallions sit cleanly inside the surrounding grid.</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">Beyond kumiko: another face of Japanese precision</div>
+
+      <p class="article-p-en">If you've spent any time looking at Japanese woodwork, you've probably come across kumiko (組子), the lattice joinery technique that builds intricate geometric patterns out of thin wooden strips without a single nail. It's become one of the most internationally recognized symbols of Japanese precision craft.</p>
+      <p class="article-p-en">Standing in front of that bamboo tray, it struck me that mutsume-ami scratches the exact same itch, just in a different material. The same obsession with repeating geometry, the same patience required to keep dozens of thin strips perfectly aligned, the same quiet flex of look how precise we can make this by hand. Kumiko gets the spotlight, but bamboo weaving has been doing its own version of the same thing for just as long.</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">A craft still being made by hand</div>
+
+      <p class="article-p-en">One photo I took at the stall happened to catch a weaver's hand mid-motion, fingers pinching a single bamboo strip, easing it into place among dozens of others already crossing the workspace. It's a small detail, but it mattered to me. Everything on that blanket had come from hands like that one.</p>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/bamboo-hand-weaving-01.jpg" alt="A weaver's hand mid-motion, easing a bamboo strip into a chrysanthemum-pattern weave" loading="lazy" />
+        <p class="photo-caption">A weaver's hand mid-motion, easing a bamboo strip into a chrysanthemum-pattern weave.</p>
+      </div>
+
+      <div class="photo-block">
+        <img src="/images/native-japanese/bamboo-hand-weaving-02.jpg" alt="A close-up of two hands working a hexagonal weave in progress" loading="lazy" />
+        <p class="photo-caption">A close-up of two hands working a hexagonal weave in progress, with a finished medallion pattern visible at the center.</p>
+      </div>
+
+      <p class="article-p-en">Today, only a handful of dedicated young artisans carry the tradition forward, and the skill takes years to build. Getting bamboo strips to a uniform thickness throughout, the very first step toward becoming a basket maker, is said to take three years on its own. Every tray, ladle, and box on that blanket represented thousands of hours of accumulated hand-skill, most of it invisible unless you already know what you're looking at.</p>
+
+      <hr class="section-divider" />
+
+      <div class="section-label">Why I keep thinking about it</div>
+
+      <p class="article-p-en">I didn't buy anything that day, which I half-regret now. What I took instead were photos and a lingering fascination with how a single repeated unit, three strips crossing to form one hexagon, can scale up into chrysanthemums, stars, and houndstooth checks depending entirely on the intention of the hands weaving it.</p>
+      <p class="article-p-en">It's a good reminder that traditional craft isn't a fixed museum piece. It's a living grammar, still being spoken, still being extended by people willing to spend three years just learning how to cut a strip the same thickness twice in a row.</p>
+      <p class="article-p-en">And it's a good reminder of something else: Japan still has beautiful tools like this tucked into everyday life, not behind glass in a museum, but laid out on a blanket at an ordinary market stall, waiting for someone to crouch down and notice.</p>
+
+      <div class="cta-block">
+        <p>If you're drawn to Japanese craft and material culture, take a look at <a href="https://www.etsy.com/shop/AnimArtJapan" target="_blank" rel="noopener">AnimArtJapan</a> — digital art prints inspired by Japanese aesthetics.</p>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag">Native Japanese</span>
+        <span class="tag">bamboo weaving</span>
+        <span class="tag">mutsume-ami</span>
+        <span class="tag">kumiko</span>
+        <span class="tag">Japanese craft</span>
+        <span class="tag">takezaiku</span>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function setLang(lang) {
+      document.getElementById('section-ja').classList.toggle('hidden', lang !== 'ja');
+      document.getElementById('section-en').classList.toggle('hidden', lang !== 'en');
+      document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    }
+  </script>
+
+</body>
+</html>
