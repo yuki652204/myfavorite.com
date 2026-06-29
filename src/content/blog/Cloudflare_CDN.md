@@ -1,9 +1,9 @@
 ---
 title: "なぜサーバーにCDNを挟むのか調べたら、Webの仕組みそのものが見えてきた"
-description: "CDN・オリジンサーバー・リバースプロキシ・エッジコンピューティング——現代のWebを支える技術を、実際の通信ログとCloudflareの訴訟事例から読み解く"
-pubDate: 2026-06-29
+slug: "cloudflare-cdn-architecture"
+pubDate: "2026-06-29"
 tags: ["インフラ", "CDN", "Cloudflare", "セキュリティ", "Web技術"]
-lang: "ja"
+heroImage: "/images/cloudflare-hero.png"
 ---
 
 Webサイトを公開するなら「CDNを使うと速くなる」という話はよく聞きます。
@@ -128,6 +128,8 @@ Cloudflare
 ---
 
 ## 実際の通信を覗いてみた話
+
+![CDNを挟む構成と世界各地のエッジサーバー](/images/cloudflare-cdn-thumbnail.png)
 
 ここまでは教科書的な説明ですが、実際にあるサイトの通信ログをブラウザの開発者ツールで観察してみると、この3層構造がそのまま現れていました。
 
