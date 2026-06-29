@@ -3,7 +3,7 @@ title: "なぜサーバーにCDNを挟むのか調べたら、Webの仕組みそ
 slug: "cloudflare-cdn-architecture"
 pubDate: "2026-06-29"
 tags: ["インフラ", "CDN", "Cloudflare", "セキュリティ", "Web技術"]
-heroImage: "/images/cloudflare-hero.png"
+heroImage: "/images/cloudflare-cdn-thumbnail.png"
 ---
 
 Webサイトを公開するなら「CDNを使うと速くなる」という話はよく聞きます。
