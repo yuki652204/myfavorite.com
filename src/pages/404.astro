@@ -1,0 +1,55 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <BaseHead title="ページが見つかりません | 404" description="お探しのページは見つかりませんでした。" />
+    <meta name="robots" content="noindex" />
+    <style>
+      .notfound {
+        text-align: center;
+        padding: 5em 1em 6em;
+      }
+      .notfound-code {
+        font-size: 5rem;
+        font-weight: 700;
+        color: var(--gold);
+        line-height: 1;
+        margin: 0 0 0.5rem;
+        letter-spacing: 0.1em;
+      }
+      .notfound h1 {
+        font-size: 1.6rem;
+        margin: 0 0 1rem;
+      }
+      .notfound-home {
+        display: inline-block;
+        margin-top: 1.5rem;
+        padding: 0.5em 1.4em;
+        border: 0.5px solid rgba(200, 168, 75, 0.5);
+        border-radius: 8px;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: border-color 0.2s, background 0.2s;
+      }
+      .notfound-home:hover {
+        border-color: var(--gold);
+        background: rgba(200, 168, 75, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main class="notfound">
+      <p class="notfound-code">404</p>
+      <h1>ページが見つかりません</h1>
+      <p>お探しのページは移動または削除された可能性があります。</p>
+      <a class="notfound-home" href="/">← トップページへ戻る</a>
+    </main>
+    <Footer />
+  </body>
+</html>
